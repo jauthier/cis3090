@@ -134,7 +134,7 @@ Point * removeFront(Queue * queue){
 }
 
 int isEmpty(Queue * queue){
-	if queue->head == NULL
+	if (queue->head == NULL)
 		return 1;
 	else 
 		return 0;
