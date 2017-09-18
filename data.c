@@ -171,11 +171,11 @@ int main(int argc, char const *argv[]) {
       		pthread_join(threadList[thread], NULL); 
    		}
 
-		//printGrid(gridSize, writeGrid);
+		printGrid(gridSize, writeGrid);
 		//write over grid
 		swapGrids(gridSize);
-		if (display == 1)
-			printGrid(gridSize, readGrid);
+		//if (display == 1)
+		//	printGrid(gridSize, readGrid);
 		
 	}
 
