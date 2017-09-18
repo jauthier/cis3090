@@ -3,6 +3,12 @@
 #include <string.h>
 #include <time.h>
 
+typedef struct param{
+	int start;
+	int end;
+	int gridSize;
+} Param;
+
 int ** readGrid;
 int ** writeGrid;
 
@@ -24,6 +30,18 @@ void initArrays(int gridSize){
         writeGrid[i] = malloc(sizeof(int)*gridSize);
     }
     setArray(gridSize);
+}
+
+void freeArrays(int gridSize){
+	int i = 0;
+	for(i=0;i<gridSize;i++){
+		free(readGrid[i]);
+	}
+	for(i=0;i<gridSize;i++){
+		free(writeGrid[i]);
+	}
+	free(readGrid);
+	free(writeGrid);
 }
 
 void setArray(int gridSize){
@@ -52,13 +70,14 @@ void printGrid(int gridSize, int ** grid){
 	printf("\n");
 }
 
-void nextGen(int start, int end, int gridSize){
-	int i = start; 
+void nextGen(void * ptr){
+	Param * param = (Param*)ptr;
+	int i = param->start; 
 	int j = 0;
 	printf("%d-%d\n", i,end);
-	for (i=start;i<end;i++){
+	for (i=start;i<param->end;i++){
 		printf("%d\n", i);
-		for (j=0; j<gridSize;++j){
+		for (j=0; j<param->gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
 				//check up
@@ -166,7 +185,12 @@ int main(int argc, char const *argv[]) {
 			int start = (gridSize/numThreads)*thread;
 			int end = ((gridSize/numThreads)*(thread+1))-1;
 			printf("%d: %d-%d\n", thread,start,end);
-			pthread_create(&threadList[thread], NULL, nextGen,start,end,gridSize);
+			Param * param = malloc(sizeof(Param));
+			param->start = start;
+			param->end = end;
+			param->gridSize = gridSize;
+			pthread_create(&threadList[thread], NULL, nextGen,(void*)param);
+			free(param);
 		}
 		for (thread = 0; thread < numThreads; thread++){
       		pthread_join(threadList[thread], NULL); 
@@ -183,6 +207,6 @@ int main(int argc, char const *argv[]) {
    
 
    free(threadList);
-
+   freeArrays(gridSize);
 	return 0;
 }
