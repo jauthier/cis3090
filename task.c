@@ -6,7 +6,7 @@
 typedef struct Point{
 	int column;
 	int row;
-	Point * next;
+	struct Point * next;
 } Point;
 
 typedef struct queue{
