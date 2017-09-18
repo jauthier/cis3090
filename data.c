@@ -57,6 +57,7 @@ void nextGen(int start, int end, int gridSize){
 	int j = 0;
 	printf("%d\n", i);
 	for (i=start;i<end;i++){
+		//printf("%d\n", i);
 		for (j=0; j<gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
@@ -100,7 +101,7 @@ void nextGen(int start, int end, int gridSize){
 					neighbours++;
 			}
 
-			printf("%d", neighbours);
+			printf("%d\n", neighbours);
 			if(readGrid[i][j] == 1){
 				if(neighbours==2 || neighbours == 3)
 					writeGrid[i][j] = 1; //lives
