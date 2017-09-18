@@ -189,6 +189,7 @@ int main(int argc, char const *argv[]) {
 			param->start = start;
 			param->end = end;
 			param->gridSize = gridSize;
+			printf("%d\n", param->start);
 			pthread_create(&threadList[thread], NULL, nextGen,(void*)param);
 			free(param);
 		}
