@@ -1,3 +1,10 @@
+/*
+** data.c
+** CIS3090 Assigmnet 1
+** Author: Jessica Authier, 0849720
+** Last Modified: 09/30/2017
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +21,10 @@ int ** writeGrid;
 
 void initArrays(int gridSize);
 void setArray(int gridSize);
-
+void freeArrays(int gridSize);
+void printGrid(int gridSize, int ** grid);
+void nextGen(void * ptr);
+void swapGrids(gridSize);
 
 void initArrays(int gridSize){
 	//init the arrays
@@ -32,18 +42,6 @@ void initArrays(int gridSize){
     setArray(gridSize);
 }
 
-void freeArrays(int gridSize){
-	int i = 0;
-	for(i=0;i<gridSize;i++){
-		free(readGrid[i]);
-	}
-	for(i=0;i<gridSize;i++){
-		free(writeGrid[i]);
-	}
-	free(readGrid);
-	free(writeGrid);
-}
-
 void setArray(int gridSize){
 	int i=0, j=0;
 	srand(time(NULL));
@@ -57,6 +55,18 @@ void setArray(int gridSize){
 			}
 		}
 	}
+}
+
+void freeArrays(int gridSize){
+	int i = 0;
+	for(i=0;i<gridSize;i++){
+		free(readGrid[i]);
+	}
+	for(i=0;i<gridSize;i++){
+		free(writeGrid[i]);
+	}
+	free(readGrid);
+	free(writeGrid);
 }
 
 void printGrid(int gridSize, int ** grid){
