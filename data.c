@@ -182,7 +182,6 @@ int main(int argc, char const *argv[]) {
 			//get the columns to work on
 			int start = (gridSize/numThreads)*thread;
 			int end = ((gridSize/numThreads)*(thread+1))-1;
-			printf("%d: %d-%d\n", thread,start,end);
 			paramList[thread] = malloc(sizeof(Param));
 			paramList[thread]->start = start;
 			paramList[thread]->end = end;
@@ -193,11 +192,11 @@ int main(int argc, char const *argv[]) {
       		pthread_join(threadList[thread], NULL); 
    		}
 
-		printGrid(gridSize, writeGrid);
+		//printGrid(gridSize, writeGrid);
 		//write over grid
 		swapGrids(gridSize);
-		//if (display == 1)
-		//	printGrid(gridSize, readGrid);
+		if (display == 1)
+			printGrid(gridSize, readGrid);
 		
 	}
 
