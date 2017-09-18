@@ -1,0 +1,303 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+typedef struct queue{
+	Point * head;
+	Point * tail;
+} Queue;
+
+typedef struct point{
+	int column;
+	int row;
+	Point * next;
+} Point;
+
+Queue * occupied;
+Queue * unoccupied;
+
+int ** readGrid;
+int ** writeGrid;
+
+int done;
+
+void initArrays(int gridSize);
+void setArray(int gridSize);
+void freeArrays(int gridSize);
+void printGrid(int gridSize, int ** grid);
+
+
+void initArrays(int gridSize){
+	//init the arrays
+	int i = 0;
+	readGrid = malloc(sizeof(int *)*gridSize);
+    for(i=0;i<gridSize;i++){
+        readGrid[i] = malloc(sizeof(int)*gridSize);
+    }
+
+    i = 0;
+	writeGrid = malloc(sizeof(int *)*gridSize);
+    for(i=0;i<gridSize;i++){
+        writeGrid[i] = malloc(sizeof(int)*gridSize);
+    }
+    setArray(gridSize);
+}
+
+
+void setArray(int gridSize){
+	int i=0, j=0;
+	srand(time(NULL));
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<gridSize;++j){
+			int num = rand()%5;
+			if (num == 1){
+				readGrid[i][j] = 1;
+			} else {
+				readGrid[i][j] = 0;
+			}
+		}
+	}
+}
+
+void freeArrays(int gridSize){
+	int i = 0;
+	for(i=0;i<gridSize;i++){
+		free(readGrid[i]);
+	}
+	for(i=0;i<gridSize;i++){
+		free(writeGrid[i]);
+	}
+	free(readGrid);
+	free(writeGrid);
+}
+
+Point * initPoint(int col, int row){
+	Point * newPoint = malloc(sizeof(Point));
+	newPoint->column = col;
+	newPoint->row = row;
+	newPoint->next = NULL;
+	return newPoint;
+}
+
+void deletePoint(Point toDelete){
+	free(toDelete);
+}
+
+Queue* initQueue(){
+	Queue * newQueue = malloc(sizeof(Queue));
+	newQueue->head = NULL;
+	newQueue->tail = NULL;
+	return newQueue;
+}
+
+void deleteQueue(Queue * toDelete){
+	Point * pt = toDelete->head;
+	while (pt != NULL){
+		Point *hold = pt;
+		pt = pt->next;
+		free(hold);
+	}
+	free(toDelete);
+}
+
+void addBack(Point * pt, Queue * addTo){
+	if (addTo->tail != NULL){ /* the list already has elements*/
+		addTo->tail->next = pt;
+		addTo->tail = pt;
+	} else { /* there are no elements */
+		addTo->head = pt;
+		addTo->tail = pt;
+	}
+}
+
+Point * removeFront(Queue * queue){
+	if (queue->head == NULL){ /* there are no elements */
+		return NULL;
+	} else if (queue->head->next == NULL){ /* there is only one element*/
+		Point * hold = queue-> head;
+		queue->head = NULL;
+		queue->tail = NULL;
+		return hold; 
+	} else {
+		Point * hold = queue-> head;
+		queue->head = queue->head->next;
+		return hold;
+	}
+}
+
+void printGrid(int gridSize, int ** grid){
+	int i=0, j=0;
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<gridSize;++j){
+			printf("%d", grid[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void neighbourCount(int gridSize){
+	int i = 0; 
+	int j = 0;
+	int oc = 0;
+	int unoc = 0;
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<param->gridSize;++j){
+			int neighbours = 0;
+			if (i > 0){
+				//check up
+				if (readGrid[i-1][j] == 1)
+					neighbours++;
+				if (j > 0){
+					//check upper left
+					if (readGrid[i-1][j-1] == 1)
+						neighbours++;
+				}
+				if (j < (param->gridSize-1)){
+					//check upper right
+					if (readGrid[i-1][j+1] == 1)
+						neighbours++;
+				}
+			}
+			if (i < (param->gridSize-1)){
+				//check down
+				if (readGrid[i+1][j] == 1)
+					neighbours++;
+				if (j > 0){
+					//check lowwer left
+					if (readGrid[i+1][j-1] == 1)
+						neighbours++;
+				}
+				if (j < (param->gridSize-1)){
+					//check lower right
+					if (readGrid[i+1][j+1] == 1)
+						neighbours++;
+				}	
+			}
+			if (j > 0){
+				//check left
+				if (readGrid[i][j-1] == 1)
+					neighbours++;
+			}
+			if (j < (param->gridSize-1)){
+				//check right
+				if (readGrid[i][j+1] == 1)
+					neighbours++;
+			}
+
+			Point * pt = initPoint(i,j);
+
+			if(readGrid[i][j] == 1){
+				if(neighbours==2 || neighbours == 3){
+					addBack(pt,occupied);
+					oc++;
+				} else {
+					unoccupied[unoc][0] = i;//dies
+					unoccupied[unoc][1] = j;
+					unoc++;
+				} 
+			} else {
+				if (neighbours == 3){
+					occupied[oc][0] = i;//baby
+					occupied[oc][1] = j;
+					oc++;
+				} else {
+					unoccupied[unoc][0] = i;//nothing
+					unoccupied[unoc][1] = j;
+					unoc++;
+				}
+			}
+		}
+	}
+	done = 1;
+}
+
+void writeAlive(){
+	while (done == 0){
+		Point * pt = removeFront(occupied);
+		if (pt != NULL){ // the list was not empty
+			writeGrid[pt->col][pt->row] = 1;
+			deletePoint(pt);
+		}
+	}
+
+}
+
+void writeDead(){
+	while (done == 0){
+		Point * pt = removeFront(unoccupied);
+		if (pt != NULL){ // the list was not empty
+			writeGrid[pt->col][pt->row] = 0;
+			deletePoint(pt);
+		}
+	}
+}
+
+void swapGrids(gridSize){
+	int i=0, j=0;
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<gridSize;++j){
+			readGrid[i][j] = writeGrid[i][j];
+		}
+	}
+}
+
+int main(int argc, char const *argv[]) {
+	
+	if (argc < 3){
+		printf("Please enter the number of threads, the size of the\ngrid and the number of iterations as command line arguments\n");
+		exit(0);
+	}
+
+	//up to 4 command line arguments
+	int gridSize = atol(argv[1]);
+	int numIter = atol(argv[2]);
+	int display = 0;
+
+	if (argc == 4){
+		if (strcmp(argv[3], "-d")==0){
+			display = 1;
+		}
+	}
+
+	//init the arrays
+	initArrays(gridSize);
+	if (display == 1)
+		printGrid(gridSize, readGrid);
+
+	//init the arrays
+	int i;
+	int len = gridSize*gridSize;
+	occupied = malloc(sizeof(int*)*(len));
+	for (i=0;i<len;i++){
+		occupied[i] = malloc(sizeof(int)*2);
+	}
+	unoccupied = malloc(sizeof(int*)*(len));
+	for (i=0;i<len;i++){
+		unoccupied[i] = malloc(sizeof(int)*2);
+	}
+
+	//do thread things
+	pthread_t t0,t1,t2;
+	for (i=0;i<numIter;i++){
+		done = 0;
+		pthread_create(&t0,NULL,neighbourCount, gridSize);
+		pthread_create(&t1,NULL,writeAlive);
+		pthread_create(&t2,NULL,writeDead);
+		
+      	pthread_join(t0, NULL);
+      	pthread_join(t1, NULL);
+      	pthread_join(t2, NULL); 
+
+		//write over grid
+		swapGrids(gridSize);
+		if (display == 1)
+			printGrid(gridSize, readGrid);		
+	}
+  
+	deleteQueue(occupied);
+	deleteQueue(unoccupied);
+   freeArrays(gridSize);
+	return 0;
+}
