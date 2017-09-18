@@ -87,7 +87,7 @@ Point * initPoint(int col, int row){
 	return newPoint;
 }
 
-void deletePoint(Point toDelete){
+void deletePoint(Point * toDelete){
 	free(toDelete);
 }
 
@@ -150,7 +150,7 @@ void neighbourCount(int gridSize){
 	int oc = 0;
 	int unoc = 0;
 	for (i=0;i<gridSize;i++){
-		for (j=0; j<param->gridSize;++j){
+		for (j=0; j<gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
 				//check up
@@ -161,13 +161,13 @@ void neighbourCount(int gridSize){
 					if (readGrid[i-1][j-1] == 1)
 						neighbours++;
 				}
-				if (j < (param->gridSize-1)){
+				if (j < (gridSize-1)){
 					//check upper right
 					if (readGrid[i-1][j+1] == 1)
 						neighbours++;
 				}
 			}
-			if (i < (param->gridSize-1)){
+			if (i < (gridSize-1)){
 				//check down
 				if (readGrid[i+1][j] == 1)
 					neighbours++;
@@ -176,7 +176,7 @@ void neighbourCount(int gridSize){
 					if (readGrid[i+1][j-1] == 1)
 						neighbours++;
 				}
-				if (j < (param->gridSize-1)){
+				if (j < (gridSize-1)){
 					//check lower right
 					if (readGrid[i+1][j+1] == 1)
 						neighbours++;
@@ -187,7 +187,7 @@ void neighbourCount(int gridSize){
 				if (readGrid[i][j-1] == 1)
 					neighbours++;
 			}
-			if (j < (param->gridSize-1)){
+			if (j < (gridSize-1)){
 				//check right
 				if (readGrid[i][j+1] == 1)
 					neighbours++;
