@@ -3,16 +3,17 @@
 #include <string.h>
 #include <time.h>
 
-typedef struct queue{
-	Point * head;
-	Point * tail;
-} Queue;
-
 typedef struct point{
 	int column;
 	int row;
 	Point * next;
 } Point;
+
+typedef struct queue{
+	Point * head;
+	Point * tail;
+} Queue;
+
 
 Queue * occupied;
 Queue * unoccupied;
