@@ -204,9 +204,9 @@ int main(int argc, char const *argv[]) {
 		
 	}
 
-   if (i=0;i<numThreads;i++){
+	if (i=0;i<numThreads;i++){
    		free(paramList[i]);
-   }
+	}
    free(paramList);
 
    free(threadList);
