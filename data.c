@@ -187,10 +187,10 @@ int main(int argc, char const *argv[]) {
 			int end = ((gridSize/numThreads)*(thread+1))-1;
 			printf("%d: %d-%d\n", thread,start,end);
 			paramList[thread] = malloc(sizeof(Param));
-			paramList[i]->start = start;
-			paramList[i]->end = end;
-			paramList[i]->gridSize = gridSize;
-			pthread_create(&threadList[thread], NULL, nextGen,(void*)paramList[i]);
+			paramList[thread]->start = start;
+			paramList[thread]->end = end;
+			paramList[thread]->gridSize = gridSize;
+			pthread_create(&threadList[thread], NULL, nextGen,(void*)paramList[thread]);
 		}
 		for (thread = 0; thread < numThreads; thread++){
       		pthread_join(threadList[thread], NULL); 
