@@ -100,7 +100,7 @@ void nextGen(int start, int end, int gridSize){
 					neighbours++;
 			}
 
-
+			printf("%d", neighbours);
 			if(readGrid[i][j] == 1){
 				if(neighbours==2 || neighbours == 3)
 					writeGrid[i][j] = 1; //lives
