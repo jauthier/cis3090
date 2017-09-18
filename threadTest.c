@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthreads.h>
+#include <pthread.h>
 
 void * runner(void * args);
 
 int main(int argc, char const *argv[])
 {
 	
-	char Name[5] = "Jess";
+	char name[5] = "Jess";
 	//thread id
 	pthread_t thread;
 	//create attributes
