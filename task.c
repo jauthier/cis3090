@@ -225,7 +225,7 @@ void neighbourCount(int gridSize){
 }
 
 void writeAlive(){
-	while (done == 0 || isEmpty(occupied) == 1 || isEmpty(unoccupied) == 1){
+	while (done == 0 || isEmpty(occupied) == 0 || isEmpty(unoccupied) == 0){
 		Point * pt = removeFront(occupied);
 		if (pt != NULL){ // the list was not empty
 			writeGrid[pt->column][pt->row] = 1;
@@ -236,7 +236,7 @@ void writeAlive(){
 }
 
 void writeDead(){
-	while (done == 0 || isEmpty(unoccupied) == 1 || isEmpty(occupied) == 1){
+	while (done == 0 || isEmpty(unoccupied) == 0 || isEmpty(occupied) == 0){
 		Point * pt = removeFront(unoccupied);
 		if (pt != NULL){ // the list was not empty
 			writeGrid[pt->column][pt->row] = 0;
