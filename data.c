@@ -166,17 +166,20 @@ int main(int argc, char const *argv[]) {
 			int end = ((gridSize/numThreads)*(thread+1))-1;
 			printf("%d: %d-%d\n", thread,start,end);
 			pthread_create(&threadList[thread], NULL, nextGen,start,end,gridSize);
-			printGrid(gridSize, writeGrid);
-			//write over grid
-			swapGrids(gridSize);
-			//if (display == 1)
-			//	printGrid(gridSize, readGrid);
 		}
+		for (thread = 0; thread < numThreads; thread++){
+      		pthread_join(threadList[thread], NULL); 
+   		}
+
+		//printGrid(gridSize, writeGrid);
+		//write over grid
+		swapGrids(gridSize);
+		if (display == 1)
+			printGrid(gridSize, readGrid);
+		
 	}
 
-   for (thread = 0; thread < numThreads; thread++){
-      pthread_join(threadList[thread], NULL); 
-   }
+   
 
    free(threadList);
 
