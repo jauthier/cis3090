@@ -156,8 +156,8 @@ int main(int argc, char const *argv[]) {
 	//do thread things
 	long thread = 0;
 	pthread_t * threadList = malloc(sizeof(pthread_t)*numThreads);
-
-	for (int i=0;i<numIter;i++){
+	int i;
+	for (i=0;i<numIter;i++){
 
 		for (thread=0;thread<numThreads;thread++){
 			//get the columns to work on
@@ -171,11 +171,11 @@ int main(int argc, char const *argv[]) {
 		}
 	}
 
-   for (thread = 0; thread < thread_count; thread++){
+   for (thread = 0; thread < numThreads; thread++){
       pthread_join(threadList[thread], NULL); 
    }
 
-   free(thread_handles);
+   free(threadList);
 
 	return 0;
 }
