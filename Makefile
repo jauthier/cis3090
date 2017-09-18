@@ -1,7 +1,10 @@
 all: data task
 
 data: data.c
-	gcc -Wall data.c -o data -lpthread
+	gcc -Wall -o data data.c -lpthread
 
 task: task.c
-	gcc -Wall task.c -o task -lpthread
+	gcc -Wall -o task task.c -lpthread
+
+clear:
+	rm data task
