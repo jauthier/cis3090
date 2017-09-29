@@ -73,7 +73,7 @@ int main(int argc, char const *argv[]) {
 
 	//init the arrays
 	initArrays(gridSize);
-	printGrid(readGrid);
+	printGrid(gridSize, readGrid);
 
 	return 0;
 }
