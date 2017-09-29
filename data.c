@@ -32,7 +32,6 @@ void setArray(int gridSize){
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
 			int num = rand()%5;
-			printf("%d\n", num);
 			if (num == 1){
 				readGrid[i][j] = 1;
 			} else {
@@ -74,7 +73,7 @@ int main(int argc, char const *argv[]) {
 
 	//init the arrays
 	initArrays(gridSize);
-	//printGrid(gridSize, readGrid);
+	printGrid(gridSize, readGrid);
 
 	return 0;
 }
