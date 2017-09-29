@@ -41,7 +41,7 @@ void setArray(int gridSize){
 	}
 }
 
-void printGrid(int ** grid){
+void printGrid(int gridSize, int ** grid){
 	int i=0, j=0;
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
@@ -54,8 +54,7 @@ void printGrid(int ** grid){
 int main(int argc, char const *argv[]) {
 	
 	if (argc < 4){
-		printf("Please enter the number of threads, the size of the
-			\ngrid and the number of iterations as command line arguments\n");
+		printf("Please enter the number of threads, the size of the\ngrid and the number of iterations as command line arguments\n");
 		exit(0);
 	}
 
@@ -66,8 +65,9 @@ int main(int argc, char const *argv[]) {
 	int display = 0;
 
 	if (argc == 5){
-		if (strcmp(argv[4], "-d")==0)
+		if (strcmp(argv[4], "-d")==0){
 			display = 1;
+		}
 	}
 
 
