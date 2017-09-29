@@ -30,9 +30,9 @@ void setArray(int gridSize){
 	int i=0, j=0;
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
-			int ran = srand(time(NULL));
-			printf("%d\n", ran);
-			int num = rand()%5;
+			srand(time(NULL));
+			int num = rand();
+			printf("%d\n", num);
 			if (num == 1){
 				readGrid[i][j] = 1;
 			} else {
