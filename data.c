@@ -49,6 +49,7 @@ void printGrid(int gridSize, int ** grid){
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
 void nextGen(int gridSize){
