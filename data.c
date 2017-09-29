@@ -137,7 +137,7 @@ int main(int argc, char const *argv[]) {
 	initArrays(gridSize);
 	printGrid(gridSize, readGrid);
 	nextGen(gridSize);
-	printGrid(gridSize, writeGrid)
+	printGrid(gridSize, writeGrid);
 
 	return 0;
 }
