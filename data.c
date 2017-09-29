@@ -28,10 +28,10 @@ void initArrays(int gridSize){
 
 void setArray(int gridSize){
 	int i=0, j=0;
+	srand(time(NULL));
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
-			srand(time(j+i));
-			int num = rand();
+			int num = rand()%5;
 			printf("%d\n", num);
 			if (num == 1){
 				readGrid[i][j] = 1;
