@@ -51,6 +51,68 @@ void printGrid(int gridSize, int ** grid){
 	}
 }
 
+void nextGen(int gridSize){
+	int i=0, j=0;
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<gridSize;++j){
+			int neighbours = 0;
+			if (i > 0){
+				//check up
+				if (readGrid[i-1][j] == 1)
+					neighbours++;
+				if (j > 0){
+					//check upper left
+					if (readGrid[i-1][j-1] == 1)
+						neighbours++;
+				}
+				if (j < (gridSize-1)){
+					//check upper right
+					if (readGrid[i-1][j+1] == 1)
+						neighbours++;
+				}
+			}
+			if (i < (gridSize-1)){
+				//check down
+				if (readGrid[i+1][j] == 1)
+					neighbours++;
+				if (j > 0){
+					//check lowwer left
+					if (readGrid[i+1][j-1] == 1)
+						neighbours++;
+				}
+				if (j < (gridSize-1)){
+					//check lower right
+					if (readGrid[i+1][j+1] == 1)
+						neighbours++;
+				}	
+			}
+			if (j > 0){
+				//check left
+				if (readGrid[i][j-1] == 1)
+					neighbours++;
+			}
+			if (j < (gridSize-1)){
+				//check right
+				if (readGrid[i][j+1] == 1)
+					neighbours++;
+			}
+
+
+			if(readGrid[i][j] == 1){
+				if(neighbours==2 || neighbours == 3)
+					writeGrid[i][j] = 1; //lives
+				else 
+					writeGrid[i][j] = 0;//dies
+			} else {
+				if (neighbours == 3)
+					writeGrid[i][j] = 1;//bbay
+				else 
+					writeGrid[i][j] = 0;//nothing
+			}
+		}
+	}
+}
+
 int main(int argc, char const *argv[]) {
 	
 	if (argc < 4){
@@ -74,6 +136,8 @@ int main(int argc, char const *argv[]) {
 	//init the arrays
 	initArrays(gridSize);
 	printGrid(gridSize, readGrid);
+	nextGen(gridSize);
+	printGrid(gridSize, writeGrid)
 
 	return 0;
 }
