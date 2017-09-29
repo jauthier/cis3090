@@ -30,7 +30,7 @@ void setArray(int gridSize){
 	int i=0, j=0;
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
-			srand(time(NULL));
+			srand(time(j+i));
 			int num = rand();
 			printf("%d\n", num);
 			if (num == 1){
