@@ -57,7 +57,7 @@ void nextGen(int start, int end, int gridSize){
 	int j = 0;
 	printf("%d\n", i);
 	for (i=start;i<end;i++){
-		//printf("%d\n", i);
+		printf("%d\n", i);
 		for (j=0; j<gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
