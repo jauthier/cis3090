@@ -75,7 +75,7 @@ void nextGen(void * ptr){
 	int i = param->start; 
 	int j = 0;
 	printf("%d-%d\n", i,end);
-	for (i=start;i<param->end;i++){
+	for (i=param->start;i<param->end;i++){
 		printf("%d\n", i);
 		for (j=0; j<param->gridSize;++j){
 			int neighbours = 0;
@@ -88,13 +88,13 @@ void nextGen(void * ptr){
 					if (readGrid[i-1][j-1] == 1)
 						neighbours++;
 				}
-				if (j < (gridSize-1)){
+				if (j < (param->gridSize-1)){
 					//check upper right
 					if (readGrid[i-1][j+1] == 1)
 						neighbours++;
 				}
 			}
-			if (i < (gridSize-1)){
+			if (i < (param->gridSize-1)){
 				//check down
 				if (readGrid[i+1][j] == 1)
 					neighbours++;
@@ -103,7 +103,7 @@ void nextGen(void * ptr){
 					if (readGrid[i+1][j-1] == 1)
 						neighbours++;
 				}
-				if (j < (gridSize-1)){
+				if (j < (param->gridSize-1)){
 					//check lower right
 					if (readGrid[i+1][j+1] == 1)
 						neighbours++;
@@ -114,7 +114,7 @@ void nextGen(void * ptr){
 				if (readGrid[i][j-1] == 1)
 					neighbours++;
 			}
-			if (j < (gridSize-1)){
+			if (j < (param->gridSize-1)){
 				//check right
 				if (readGrid[i][j+1] == 1)
 					neighbours++;
