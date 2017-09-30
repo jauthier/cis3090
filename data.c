@@ -177,6 +177,7 @@ int main(int argc, char const *argv[]) {
 	//do thread things
 	long thread = 0;
 	pthread_t * threadList = malloc(sizeof(pthread_t)*numThreads);
+	Param ** paramList = malloc(sizeof(Param)*numThreads);
 	int i;
 	for (i=0;i<numIter;i++){
 
@@ -185,13 +186,12 @@ int main(int argc, char const *argv[]) {
 			int start = (gridSize/numThreads)*thread;
 			int end = ((gridSize/numThreads)*(thread+1))-1;
 			printf("%d: %d-%d\n", thread,start,end);
-			Param * param = malloc(sizeof(Param));
+			paramList[thread] = malloc(sizeof(param));
 			param->start = start;
 			param->end = end;
 			param->gridSize = gridSize;
 			printf("%d\n", param->start);
 			pthread_create(&threadList[thread], NULL, nextGen,(void*)param);
-			free(param);
 		}
 		for (thread = 0; thread < numThreads; thread++){
       		pthread_join(threadList[thread], NULL); 
@@ -205,7 +205,10 @@ int main(int argc, char const *argv[]) {
 		
 	}
 
-   
+   if (i=0;i<numThreads;i++){
+   		free(paramList[i]);
+   }
+   free(paramList);
 
    free(threadList);
    freeArrays(gridSize);
