@@ -186,12 +186,11 @@ int main(int argc, char const *argv[]) {
 			int start = (gridSize/numThreads)*thread;
 			int end = ((gridSize/numThreads)*(thread+1))-1;
 			printf("%d: %d-%d\n", thread,start,end);
-			paramList[thread] = malloc(sizeof(param));
-			param->start = start;
-			param->end = end;
-			param->gridSize = gridSize;
-			printf("%d\n", param->start);
-			pthread_create(&threadList[thread], NULL, nextGen,(void*)param);
+			paramList[thread] = malloc(sizeof(Param));
+			paramList[i]->start = start;
+			paramList[i]->end = end;
+			paramList[i]->gridSize = gridSize;
+			pthread_create(&threadList[thread], NULL, nextGen,(void*)paramList[i]);
 		}
 		for (thread = 0; thread < numThreads; thread++){
       		pthread_join(threadList[thread], NULL); 
