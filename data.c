@@ -55,7 +55,7 @@ void printGrid(int gridSize, int ** grid){
 void nextGen(int start, int end, int gridSize){
 	int i = start; 
 	int j = 0;
-	printf("%d\n", i);
+	printf("%d-%d\n", i,end);
 	for (i=start;i<end;i++){
 		printf("%d\n", i);
 		for (j=0; j<gridSize;++j){
