@@ -287,7 +287,7 @@ int main(int argc, char const *argv[]) {
       	pthread_join(t1, NULL);
       	pthread_join(t2, NULL); 
 
-		printGrid(writeGrid);
+		printGrid(gridSize, writeGrid);
 
 		//write over grid
 		swapGrids(gridSize);
