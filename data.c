@@ -55,6 +55,7 @@ void printGrid(int gridSize, int ** grid){
 void nextGen(int start, int end, int gridSize){
 	int i = start; 
 	int j = 0;
+	printf("%d\n", i);
 	for (i=start;i<end;i++){
 		for (j=0; j<gridSize;++j){
 			int neighbours = 0;
@@ -163,11 +164,13 @@ int main(int argc, char const *argv[]) {
 			//get the columns to work on
 			int start = (gridSize/numThreads)*thread;
 			int end = ((gridSize/numThreads)*(thread+1))-1;
+			printf("%d: %d-%d\n", thread,start,end);
 			pthread_create(&threadList[thread], NULL, nextGen,start,end,gridSize);
+			printGrid(writeGrid);
 			//write over grid
 			swapGrids(gridSize);
-			if (display == 1)
-				printGrid(gridSize, readGrid);
+			//if (display == 1)
+			//	printGrid(gridSize, readGrid);
 		}
 	}
 
