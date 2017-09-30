@@ -52,9 +52,10 @@ void printGrid(int gridSize, int ** grid){
 	printf("\n");
 }
 
-void nextGen(int gridSize){
-	int i=0, j=0;
-	for (i=0;i<gridSize;i++){
+void nextGen(int start, int end, int gridSize){
+	int i = start; 
+	int j = 0;
+	for (i=start;i<end;i++){
 		for (j=0; j<gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
@@ -114,6 +115,15 @@ void nextGen(int gridSize){
 	}
 }
 
+void swapGrids(gridSize){
+	int i=0, j=0;
+	for (i=0;i<gridSize;i++){
+		for (j=0; j<gridSize;++j){
+			readGrid[i][j] = writeGrid[i][j];
+		}
+	}
+}
+
 int main(int argc, char const *argv[]) {
 	
 	if (argc < 4){
@@ -127,18 +137,45 @@ int main(int argc, char const *argv[]) {
 	int numIter = atol(argv[3]);
 	int display = 0;
 
+	if (numThreads < 1){
+		printf("The number of threads must be greater than zero.\n");
+		exit(0);
+	}
+
 	if (argc == 5){
 		if (strcmp(argv[4], "-d")==0){
 			display = 1;
 		}
 	}
 
-
 	//init the arrays
 	initArrays(gridSize);
-	printGrid(gridSize, readGrid);
-	nextGen(gridSize);
-	printGrid(gridSize, writeGrid);
+	if (display == 1)
+		printGrid(gridSize, readGrid);
+
+	//do thread things
+	long thread = 0;
+	pthread_t * threadList = malloc(sizeof(pthread_t)*numThreads);
+
+	for (int i=0;i<numIter;i++){
+
+		for (thread=0;thread<numThreads;thread++){
+			//get the columns to work on
+			int start = (gridSize/numThreads)*thread;
+			int end = ((gridSize/numThreads)*(thread+1))-1;
+			pthread_create(&threadList[thread], NULL, nextGen,start,end,gridSize);
+			//write over grid
+			swapGrids(gridSize);
+			if (display == 1)
+				printGrid(gridSize, readGrid);
+		}
+	}
+
+   for (thread = 0; thread < thread_count; thread++){
+      pthread_join(threadList[thread], NULL); 
+   }
+
+   free(thread_handles);
 
 	return 0;
 }
