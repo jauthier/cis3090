@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-typedef struct point{
+typedef struct Point{
 	int column;
 	int row;
 	Point * next;
