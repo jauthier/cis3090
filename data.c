@@ -74,7 +74,7 @@ void nextGen(void * ptr){
 	Param * param = (Param*)ptr;
 	int i = param->start; 
 	int j = 0;
-	printf("%d-%d\n", i,end);
+	printf("%d-%d\n", i,param->end);
 	for (i=param->start;i<param->end;i++){
 		printf("%d\n", i);
 		for (j=0; j<param->gridSize;++j){
