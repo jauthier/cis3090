@@ -27,7 +27,7 @@ void initArrays(int gridSize);
 void setArray(int gridSize);
 void freeArrays(int gridSize);
 Point * initPoint(int col, int row);
-void deletePoint(Point toDelete);
+void deletePoint(Point * toDelete);
 Queue* initQueue();
 void deleteQueue(Queue * toDelete);
 void addBack(Point * pt, Queue * addTo);
