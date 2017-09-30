@@ -25,6 +25,12 @@ int done;
 void initArrays(int gridSize);
 void setArray(int gridSize);
 void freeArrays(int gridSize);
+Point * initPoint(int col, int row);
+void deletePoint(Point toDelete);
+Queue* initQueue();
+void deleteQueue(Queue * toDelete);
+void addBack(Point * pt, Queue * addTo);
+Point * removeFront(Queue * queue);
 void printGrid(int gridSize, int ** grid);
 
 
@@ -193,18 +199,15 @@ void neighbourCount(int gridSize){
 					addBack(pt,occupied);
 					oc++;
 				} else {
-					unoccupied[unoc][0] = i;//dies
-					unoccupied[unoc][1] = j;
+					addBack(pt,unoccupied);
 					unoc++;
 				} 
 			} else {
 				if (neighbours == 3){
-					occupied[oc][0] = i;//baby
-					occupied[oc][1] = j;
+					addBack(pt,occupied);
 					oc++;
 				} else {
-					unoccupied[unoc][0] = i;//nothing
-					unoccupied[unoc][1] = j;
+					addBack(pt,unoccupied);
 					unoc++;
 				}
 			}
@@ -217,7 +220,7 @@ void writeAlive(){
 	while (done == 0){
 		Point * pt = removeFront(occupied);
 		if (pt != NULL){ // the list was not empty
-			writeGrid[pt->col][pt->row] = 1;
+			writeGrid[pt->column][pt->row] = 1;
 			deletePoint(pt);
 		}
 	}
@@ -228,7 +231,7 @@ void writeDead(){
 	while (done == 0){
 		Point * pt = removeFront(unoccupied);
 		if (pt != NULL){ // the list was not empty
-			writeGrid[pt->col][pt->row] = 0;
+			writeGrid[pt->column][pt->row] = 0;
 			deletePoint(pt);
 		}
 	}
@@ -266,19 +269,12 @@ int main(int argc, char const *argv[]) {
 	if (display == 1)
 		printGrid(gridSize, readGrid);
 
-	//init the arrays
-	int i;
-	int len = gridSize*gridSize;
-	occupied = malloc(sizeof(int*)*(len));
-	for (i=0;i<len;i++){
-		occupied[i] = malloc(sizeof(int)*2);
-	}
-	unoccupied = malloc(sizeof(int*)*(len));
-	for (i=0;i<len;i++){
-		unoccupied[i] = malloc(sizeof(int)*2);
-	}
+	//init the queues
+	occupied = initQueue();
+	unoccupied = initQueue();
 
 	//do thread things
+	int i;
 	pthread_t t0,t1,t2;
 	for (i=0;i<numIter;i++){
 		done = 0;
