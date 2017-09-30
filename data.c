@@ -74,9 +74,7 @@ void nextGen(void * ptr){
 	Param * param = (Param*)ptr;
 	int i = param->start; 
 	int j = 0;
-	printf("%d-%d\n", i,param->end);
 	for (i=param->start;i<=param->end;i++){
-		printf("Column: %d\n", i);
 		for (j=0; j<param->gridSize;++j){
 			int neighbours = 0;
 			if (i > 0){
@@ -120,7 +118,6 @@ void nextGen(void * ptr){
 					neighbours++;
 			}
 
-			printf("n: %d\n", neighbours);
 			if(readGrid[i][j] == 1){
 				if(neighbours==2 || neighbours == 3)
 					writeGrid[i][j] = 1; //lives
