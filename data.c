@@ -24,7 +24,7 @@ void initArrays(int gridSize);
 void setArray(int gridSize);
 void freeArrays(int gridSize);
 void printGrid(int gridSize, int ** grid);
-void nextGen(void * ptr);
+void * nextGen(void * ptr);
 void swapGrids(int gridSize);
 
 void initArrays(int gridSize){
@@ -81,7 +81,7 @@ void printGrid(int gridSize, int ** grid){
 	printf("\n");
 }
 
-void nextGen(void * ptr){
+void * nextGen(void * ptr){
 	Param * param = (Param*)ptr;
 	int i = param->start; 
 	int j = 0;
@@ -142,6 +142,7 @@ void nextGen(void * ptr){
 			}
 		}
 	}
+	return NULL;
 }
 
 void swapGrids(int gridSize){
