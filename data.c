@@ -24,7 +24,7 @@ void setArray(int gridSize);
 void freeArrays(int gridSize);
 void printGrid(int gridSize, int ** grid);
 void nextGen(void * ptr);
-void swapGrids(gridSize);
+void swapGrids(int gridSize);
 
 void initArrays(int gridSize){
 	//init the arrays
@@ -143,7 +143,7 @@ void nextGen(void * ptr){
 	}
 }
 
-void swapGrids(gridSize){
+void swapGrids(int gridSize){
 	int i=0, j=0;
 	for (i=0;i<gridSize;i++){
 		for (j=0; j<gridSize;++j){
