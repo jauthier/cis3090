@@ -133,6 +133,13 @@ Point * removeFront(Queue * queue){
 	}
 }
 
+int isEmpty(Queue * queue){
+	if queue->head == NULL
+		return 1;
+	else 
+		return 0;
+}
+
 void printGrid(int gridSize, int ** grid){
 	int i=0, j=0;
 	for (i=0;i<gridSize;i++){
@@ -218,7 +225,7 @@ void neighbourCount(int gridSize){
 }
 
 void writeAlive(){
-	while (done == 0){
+	while (done == 0 || isEmpty(occupied) == 1 || isEmpty(unoccupied) == 1){
 		Point * pt = removeFront(occupied);
 		if (pt != NULL){ // the list was not empty
 			writeGrid[pt->column][pt->row] = 1;
@@ -229,7 +236,7 @@ void writeAlive(){
 }
 
 void writeDead(){
-	while (done == 0){
+	while (done == 0 || isEmpty(unoccupied) == 1 || isEmpty(occupied) == 1){
 		Point * pt = removeFront(unoccupied);
 		if (pt != NULL){ // the list was not empty
 			writeGrid[pt->column][pt->row] = 0;
