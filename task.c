@@ -161,7 +161,7 @@ void printGrid(int gridSize, int ** grid){
 	printf("\n");
 }
 
-void neighbourCount(void * size){
+void * neighbourCount(void * size){
 	int gridSize = *(int *)size;
 	int i = 0; 
 	int j = 0;
@@ -236,7 +236,7 @@ void neighbourCount(void * size){
 	return NULL;
 }
 
-void * writeAlive(void *){
+void * writeAlive(void * blank){
 	while (done == 0 || isEmpty(occupied) == 0 || isEmpty(unoccupied) == 0){
 		Point * pt = removeFront(occupied);
 		if (pt != NULL){ // the list was not empty
@@ -247,7 +247,7 @@ void * writeAlive(void *){
 	return NULL;
 }
 
-void * writeDead(void *){
+void * writeDead(void * blank){
 	while (done == 0 || isEmpty(unoccupied) == 0 || isEmpty(occupied) == 0){
 		Point * pt = removeFront(unoccupied);
 		if (pt != NULL){ // the list was not empty
