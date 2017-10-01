@@ -1,3 +1,10 @@
+/*
+** task.c
+** CIS3090 Assigmnet 1
+** Author: Jessica Authier, 0849720
+** Last Modified: 10/01/2017
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +20,6 @@ typedef struct queue{
 	Point * head;
 	Point * tail;
 } Queue;
-
 
 Queue * occupied;
 Queue * unoccupied;
@@ -32,8 +38,12 @@ Queue* initQueue();
 void deleteQueue(Queue * toDelete);
 void addBack(Point * pt, Queue * addTo);
 Point * removeFront(Queue * queue);
+int isEmpty(Queue * queue);
 void printGrid(int gridSize, int ** grid);
-
+void neighbourCount(int gridSize);
+void writeAlive();
+void writeDead();
+void swapGrids(gridSize);
 
 void initArrays(int gridSize){
 	//init the arrays
@@ -50,7 +60,6 @@ void initArrays(int gridSize){
     }
     setArray(gridSize);
 }
-
 
 void setArray(int gridSize){
 	int i=0, j=0;
