@@ -300,8 +300,8 @@ int main(int argc, char const *argv[]) {
 	for (i=0;i<numIter;i++){
 		done = 0;
 		pthread_create(&t0,NULL,neighbourCount, (void*)&gridSize);
-		pthread_create(&t1,NULL,writeAlive);
-		pthread_create(&t2,NULL,writeDead);
+		pthread_create(&t1,NULL,writeAlive,(void*)&gridSize);
+		pthread_create(&t2,NULL,writeDead,(void*)&gridSize);
 		
       	pthread_join(t0, NULL);
       	pthread_join(t1, NULL);
