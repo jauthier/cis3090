@@ -294,16 +294,14 @@ int main(int argc, char const *argv[]) {
       	pthread_join(t1, NULL);
       	pthread_join(t2, NULL); 
 
-		printGrid(gridSize, writeGrid);
-
 		//write over grid
 		swapGrids(gridSize);
-		//if (display == 1)
-		//	printGrid(gridSize, readGrid);		
+		if (display == 1)
+			printGrid(gridSize, readGrid);		
 	}
   
 	deleteQueue(occupied);
 	deleteQueue(unoccupied);
-   freeArrays(gridSize);
+    freeArrays(gridSize);
 	return 0;
 }
