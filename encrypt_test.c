@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+char * encrypt(char * input);
+char * letterScramble(char * input);
 
 /*encription*/
 char * encrypt(char * input){
@@ -19,7 +21,27 @@ char * encrypt(char * input){
 	}
 	char * ret = malloc(sizeof(char)*(strlen(inDict)+1));
 	strcpy(ret, inDict);
+	char * eDict = letterScramble(ret);
 	return ret;
+}
+
+char * letterScramble(char * input){
+
+	int len = strlen(input);
+	srand(time(NULL));
+	char * eDict = malloc(sizeof(char)*(len+1));
+	strcpy(eDict, eDict);
+
+	for (int i = 0;i<len){
+		int swap = rand()%len;
+		printf("%d\n", swap);
+
+		char hold = eDict[i];
+		eDict[i] = eDict[swap];
+		eDict[swap] = hold;
+	}
+	printf("%s\n", eDict);
+	return eDict;
 }
 
 int main(int argc, char const *argv[]){
