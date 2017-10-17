@@ -31,7 +31,7 @@ char * letterScramble(char * input){
 	int len = strlen(input);
 	srand(time(NULL));
 	char * eDict = malloc(sizeof(char)*(len+1));
-	strcpy(eDict, eDict);
+	strcpy(eDict, input);
 
 	for (int i = 0;i<len;i++){
 		int swap = rand()%len;
