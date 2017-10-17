@@ -13,7 +13,7 @@ char * encrypt(char * input){
 	for (i=0; i<len; i++){
 
 		if(strstr(inDict, &input[i]) == NULL) {
-			sprinf(inDict,"%s%c",inDict, input[i]);
+			sprintf(inDict,"%s%c",inDict, input[i]);
 		}
 	}
 	char * ret = malloc(sizeof(char)*(strlen(inDict)+1));
