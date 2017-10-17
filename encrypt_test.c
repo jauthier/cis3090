@@ -12,8 +12,8 @@ char * encrypt(char * input){
 	int len = strlen(input);
 	for (i=0; i<len; i++){
 
-		if(strstr(inDict, input[i]) == NULL) {
-			sprinf(inDict,"%s%c",inDict, &input[i]);
+		if(strstr(inDict, &input[i]) == NULL) {
+			sprinf(inDict,"%s%c",inDict, input[i]);
 		}
 	}
 	char * ret = malloc(sizeof(char)*(strlen(inDict)+1));
