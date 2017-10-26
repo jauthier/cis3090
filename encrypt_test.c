@@ -22,7 +22,7 @@ char * encrypt(char * input){
 	}
 	char * ret = malloc(sizeof(char)*(strlen(inDict)+1));
 	strcpy(ret, inDict);
-	return inDict;
+	return ret;
 }
 
 char * letterScramble(char * input){
