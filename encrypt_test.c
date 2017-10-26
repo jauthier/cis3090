@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]){
 	int len = strlen(message);
 	char * enMsg = malloc(sizeof(char)*(len+1));
 	for (int i=0;i<len;i++){
-		if (message[i] != ' '||message[i] != '\n'){
+		if (message[i] != ' ' && message[i] != '\n'){
 			int pos = getPos(message[i], inDict);
 			enMsg[i] = eDict[pos];
 		} else {
