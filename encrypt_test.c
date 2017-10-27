@@ -4,8 +4,9 @@
 #include <time.h>
 #include <mpi.h>
 
-char
- * encrypt(char * input);
+char ** strs;
+
+char * encrypt(char * input);
 char * letterScramble(char * input);
 
 /*encription*/
@@ -92,7 +93,7 @@ int main(int argc, char const *argv[]){
 	// each process will get a string starting with a different letter
 	int numMPI = strlen(eDict);
 	// make an array of the strings for each process
-	char ** strs = malloc(sizeof(char *)*numMPI);
+	strs = malloc(sizeof(char *)*numMPI);
 	int i = 0;
 	for (i=0; i<numMPI; i++){
 		strs[i] = malloc(sizeof(char)*(numMPI+1));
