@@ -112,6 +112,18 @@ int main(int argc, char const *argv[]){
 		printf("%s\n", strs[i]);
 	}
 
+	// pushed up to here -- Test it
+	int myRank;
+
+	MPI_Init(NULL, NULL);
+	MPI_Comm_size(MPI_COMM_WORLD, &numMPI);
+	MPI_Com_rank(MPI_COMM_WORLD, &myRank);
+
+	printf("%s\n", strs[myRank]);
+
+	MPI_Finalize();
+
+
 
 	free(inDict);
 	free(eDict);
