@@ -117,7 +117,7 @@ int main(int argc, char const *argv[]){
 
 	MPI_Init(NULL, NULL);
 	MPI_Comm_size(MPI_COMM_WORLD, &numMPI);
-	MPI_Com_rank(MPI_COMM_WORLD, &myRank);
+	MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
 
 	printf("%s\n", strs[myRank]);
 
