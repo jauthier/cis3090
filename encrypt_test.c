@@ -128,7 +128,8 @@ int main(int argc, char const *argv[]){
 		printf("%s\n", strs[myRank]);
 		// need to send the other processes their strings
 		for(int k=1;k<numMPI;k++){
-			MPI_Send(strs[k], strlen(msg)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
+			printf("%s\n", strs[k]);
+			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 
 			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 			printf("%s\n", msg);
