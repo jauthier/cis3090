@@ -114,12 +114,21 @@ int main(int argc, char const *argv[]){
 
 	// pushed up to here -- Test it
 	int myRank;
+	char msg[26];
 
 	MPI_Init(NULL, NULL);
 	MPI_Comm_size(MPI_COMM_WORLD, &numMPI);
 	MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
 
-	printf("%s\n", strs[myRank]);
+	if (myRank != 0){
+		sprintf(msg,"%s",strs[myRank]);
+		MPI_Send(msg, strlen(msg)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+	} else {
+		printf("%s\n", strs[myRank]);
+		MPI_Recv(msg,26,MPI_CHAR,q,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		printf("%s\n", msg);
+	}
+
 
 	MPI_Finalize();
 
