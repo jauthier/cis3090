@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <mpi.h>
 
-char * encrypt(char * input);
+char
+ * encrypt(char * input);
 char * letterScramble(char * input);
 
 /*encription*/
@@ -51,6 +53,21 @@ int getPos(char c, char * str){
 	return -1;
 }
 
+char * decryption(char * enMsg, char * inDict, char * eDict){
+	int len = strlen(enMsg);
+	char * ret = malloc(sizeof(char)*(len+1));
+	for (int i=0;i<len;i++){
+		if (enMsg[i] != ' ' && enMsg[i] != '\n'){
+			int pos = getPos(enMsg[i], eDict);
+			ret[i] = inDict[pos];
+		} else {
+			ret[i] = enMsg[i];
+		}
+	}
+	ret[len] = '\0';
+	return ret;
+}
+
 int main(int argc, char const *argv[]){
 	char message[100] = "the cat";
 	char * inDict = encrypt(message);
@@ -71,8 +88,34 @@ int main(int argc, char const *argv[]){
 	enMsg[len] = '\0';
 	printf("%s\n", enMsg);
 
+
+	// each process will get a string starting with a different letter
+	int numMPI = strlen(eDict);
+	// make an array of the strings for each process
+	char ** strs = malloc(sizeof(char *)*numMPI);
+	int i = 0;
+	for (i=0; i<numMPI; i++){
+		strs[i] = malloc(sizeof(char)*(numMPI+1));
+	}
+
+	strcpy(strs[0], eDict);
+	i = 0;
+	for (int j=1;j<numMPI;j++){ // skip the first str
+		for (i=0;i<numMPI-1;i++){
+			strs[j][i] = strs[j-1][i+1];
+		}
+		strs[j][numMPI-1] = strs[j-1][0];
+		strs[j][numMPI] = '\0';
+	}
+	i=0;
+	for(i=0;i<numMPI;i++){
+		printf("%s\n", strs[i]);
+	}
+
+
 	free(inDict);
 	free(eDict);
 	free(enMsg);
 	return 0;
 }
+
