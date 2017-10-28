@@ -147,7 +147,7 @@ int main(int argc, char const *argv[]){
 			}
 		}
 		enMsg[len] = '\0';
-
+		printf("%s\n", eDict);
 		// each process will get a string starting with a different letter
 		numMPI = strlen(eDict);
 		// make an array of the strings for each process
