@@ -151,13 +151,17 @@ int main(int argc, char const *argv[]){
 	if (myRank != 0){
 		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		// get all possible combinations
-		generate(numMPI, msg, myRank);
+		//generate(numMPI, msg, myRank);
+		MPI_Send(msg, strlen(msg)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
 
 	} else {
 		// need to send the other processes their strings
 		for(int k=1;k<numMPI;k++){
+			printf("%s\n", strs[0]);
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
-			generate(numMPI, strs[0],0);
+			//generate(numMPI, strs[0],0);
+			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+			printf("%s\n", msg);
 		}
 	}
 
