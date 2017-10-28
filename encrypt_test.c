@@ -92,6 +92,7 @@ void generate(int n, char * str, int rank){
 		return;
 	}
 	for (int i=1;i<n-1;i++){
+		printf("n=%d,i=%d\n",n,i);
 		generate(n-1, str, rank);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
