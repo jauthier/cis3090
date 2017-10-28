@@ -156,8 +156,8 @@ int main(int argc, char const *argv[]){
 
 	} else {
 		// need to send the other processes their strings
+		printf("%s\n", strs[0]);
 		for(int k=1;k<numMPI;k++){
-			printf("%s\n", strs[0]);
 			//MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 			//generate(numMPI, strs[0],0);
 			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
