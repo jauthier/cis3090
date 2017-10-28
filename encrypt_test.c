@@ -89,7 +89,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 			char * token = strtok(unEnMsg, " ");
 			int words = 1;
 			while (token != NULL){
-				char * cmd;
+				char cmd[70];
 				sprintf(cmd, "grep -x %s /usr/share/dict/words", token);
 				int check = system(cmd);
 				if (check != 0)
