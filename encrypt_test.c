@@ -8,7 +8,7 @@ char ** strs;
 
 char * encrypt(char * input);
 char * letterScramble(char * input);
-char * generate(int n, char * str, int rank, char * inDict);
+char * generate(int n, char * str, char * inDict);
 
 /*encription*/
 char * encrypt(char * input){
@@ -85,7 +85,7 @@ char * generate(int n, char * str, char * inDict){
 			return NULL;
 	}
 	for (int i=1;i<n;i++){
-		char * ret = generate(n-1, str, rank, inDict);
+		char * ret = generate(n-1, str, inDict);
 		if (ret != NULL && strcmp(ret, inDict)==0)
 			return ret;
 		if (n%2 == 0) // n is even
