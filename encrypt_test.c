@@ -168,7 +168,7 @@ int main(int argc, char const *argv[]){
 		int total = factorial(numMPI-1);
 		char ** arr = malloc(sizeof(char *)*total);
 		generate(numMPI, strs[myRank], total-1, arr);
-		generate(numMPI, strs[0],0, inDict);
+		generate(numMPI, strs[0],total-1, arr);
 		MPI_Recv(msg,26,MPI_CHAR,MPI_ANY_SOURCE,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 	}
 	MPI_Finalize();
