@@ -114,7 +114,8 @@ int main(int argc, char const *argv[]){
 		MPI_Recv(buff,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		char * ret = generate(numMPI, msg, buff);
 		if (ret != NULL){
-			sprintf(ret,"%d:%s",myRank,ret);
+			char hold[28];
+			sprintf(hold,"%d:%s",myRank,ret);
 			MPI_Send(ret, strlen(ret)+1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 		}
 
