@@ -109,8 +109,10 @@ int main(int argc, char const *argv[]){
 	MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
 
 	if (myRank != 0){
+		char buff[26];
 		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-		char * ret = generate(numMPI, msg, myRank, message);
+		MPI_Recv(buff,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		char * ret = generate(numMPI, msg, buff);
 		if (ret != NULL){
 			sprintf(ret,"%d:%s",myRank,ret);
 			MPI_Send(ret, strlen(ret)+1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
@@ -152,8 +154,9 @@ int main(int argc, char const *argv[]){
 
 		for(int k=1;k<numMPI;k++){
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
+			MPI_Send(inDict, strlen(inDict)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 		}
-		char * ret = generate(numMPI, strs[0], myRank, message);
+		char * ret = generate(numMPI, strs[0], inDict);
 		char buff[26];
 		if (ret == NULL){
 			MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
