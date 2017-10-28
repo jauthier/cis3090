@@ -87,7 +87,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 	for (int i=1;i<n;i++){
 		char * ret = generate(n-1, str, inDict, message);
 		if (ret != NULL){
-			char * unEnMsg = decryption(message,ret, inDict);
+			char * unEnMsg = decryption(message,inDict,ret);
 			/*char * token = strtok(unEnMsg, " ");
 			int words = 1;
 			while (token != NULL){
