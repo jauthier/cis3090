@@ -77,22 +77,18 @@ char * swap(char * str, int i, int j){
 	return str;
 }
 
-void generate(int n, char * str, int rank){
+void generate(int n, char * str, int rank, char * inDict){
 	if (n == 1){
 		if (rank != 0){
-			MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+			if (strcmp(str, inDict)==0)
+				MPI_Send(strs[myRank], strlen(strs[myRank])+1, MPI_CHAR,0,1,MPI_COMM_WORLD);
 		} else {
-			printf("%s\n", str);
-			for (int j=1;j<n;j++){
-				char * msg[26];
-				MPI_Recv(msg,26,MPI_CHAR,j,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-				printf("%s\n", msg);
-			}
+			if (strcmp(str, inDict)==0)			
+				printf("%s\n", str);
 		}
 		return;
 	}
 	for (int i=1;i<n-1;i++){
-		printf("n=%d,i=%d\n",n,i);
 		generate(n-1, str, rank);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
@@ -152,21 +148,21 @@ int main(int argc, char const *argv[]){
 	if (myRank != 0){
 		//MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		// get all possible combinations
-		generate(numMPI, strs[myRank], myRank);
+
+		generate(numMPI, strs[myRank], 0);
 		MPI_Send(strs[myRank], strlen(strs[myRank])+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
 
 	} else {
 		// need to send the other processes their strings
 		printf("%s\n", strs[0]);
-		generate(numMPI, strs[0],0);
 		for(int k=1;k<numMPI;k++){
 			//MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 			printf("%s\n", msg);
 		}
+		generate(numMPI, strs[0],0);
+		MPI_Recv(msg,26,MPI_CHAR,MPI_ANY_SOURCE,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 	}
-
-
 	MPI_Finalize();
 
 
