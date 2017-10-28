@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 
 char * swap(char * str, int i, int j){
 	char temp = str[i];
