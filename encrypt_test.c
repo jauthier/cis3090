@@ -60,8 +60,8 @@ char * decryption(char * enMsg, char * inDict, char * eDict){
 	char * ret = malloc(sizeof(char)*(len+1));
 	for (int i=0;i<len;i++){
 		if (enMsg[i] != ' ' && enMsg[i] != '\n'){
-			int pos = getPos(enMsg[i], eDict);
-			ret[i] = inDict[pos];
+			int pos = getPos(enMsg[i], inDict);
+			ret[i] = eDict[pos];
 		} else {
 			ret[i] = enMsg[i];
 		}
@@ -77,7 +77,8 @@ char * swap(char * str, int i, int j){
 	return str;
 }
 
-char * generate(int n, char * str, char * inDict, char * message){
+// we want the eDict from the main process and the encrypted message
+char * generate(int n, char * str, char * inDict, char * message){  
 	if (n == 2){
 		if (strcmp(str, inDict)==0)
 			return str;
