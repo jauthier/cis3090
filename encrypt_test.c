@@ -81,7 +81,7 @@ void generate(int n, char * str, int rank, char * inDict){
 	if (n == 1){
 		if (rank != 0){
 			if (strcmp(str, inDict)==0)
-				MPI_Send(strs[myRank], strlen(strs[myRank])+1, MPI_CHAR,0,1,MPI_COMM_WORLD);
+				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,1,MPI_COMM_WORLD);
 		} else {
 			if (strcmp(str, inDict)==0)			
 				printf("%s\n", str);
