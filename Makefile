@@ -1,10 +1,5 @@
-all: data task
-
-data: data.c
-	gcc -Wall -o data data.c -lpthread
-
-task: task.c
-	gcc -Wall -o task task.c -lpthread
+all:
+	mpicc a2.c -o a2
 
 clear:
-	rm data task
+	rm a2

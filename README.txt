@@ -7,6 +7,17 @@ Jessica Authier, 0849720
 
 -------------------------
 
+To compile
+-----------
+
+type: "make"
+
+To Run
+-------
+
+type: "mpiexec -n <numProceses> ./a2"
+
+
 Timing 
 -------
 
