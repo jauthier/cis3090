@@ -103,8 +103,8 @@ void generate(int n, char * str, int rank){
 int main(int argc, char const *argv[]){
 	char message[100] = "the cat";
 	char * inDict = encrypt(message);
-	printf("%s\n", inDict);
-	char * eDict = letterScramble(inDict);
+	//printf("%s\n", inDict);
+	//char * eDict = letterScramble(inDict);
 	printf("%s\n", eDict);
 
 	int len = strlen(message);
@@ -118,7 +118,7 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	enMsg[len] = '\0';
-	printf("%s\n", enMsg);
+	//printf("%s\n", enMsg);
 
 
 	// each process will get a string starting with a different letter
@@ -151,15 +151,15 @@ int main(int argc, char const *argv[]){
 	if (myRank != 0){
 		//MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		// get all possible combinations
-		//generate(numMPI, msg, myRank);
+		generate(numMPI, strs[myRank], myRank);
 		MPI_Send(strs[myRank], strlen(strs[myRank])+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
 
 	} else {
 		// need to send the other processes their strings
 		printf("%s\n", strs[0]);
+		generate(numMPI, strs[0],0);
 		for(int k=1;k<numMPI;k++){
 			//MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
-			//generate(numMPI, strs[0],0);
 			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 			printf("%s\n", msg);
 		}
