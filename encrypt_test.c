@@ -155,6 +155,11 @@ int main(int argc, char const *argv[]){
 		int total = factorial(numMPI-1);
 		char ** arr = malloc(sizeof(char *)*total);
 		generate(numMPI, strs[myRank], total-1, arr);
+		i=0;
+		for (i=0;i<total;i++){
+			if (strcmp(arr[i], inDict)==0)
+				printf("Found in %d: %s\n",myRank,arr[i]);
+		}
 
 	} else {
 		// need to send the other processes their strings
@@ -167,6 +172,11 @@ int main(int argc, char const *argv[]){
 		int total = factorial(numMPI-1);
 		char ** arr = malloc(sizeof(char *)*total);
 		generate(numMPI, strs[0],total-1, arr);
+		i=0;
+		for (i=0;i<total;i++){
+			if (strcmp(arr[i], inDict)==0)
+				printf("Found in %d: %s\n",myRank,arr[i]);
+		}
 	}
 	MPI_Finalize();
 
