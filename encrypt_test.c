@@ -110,7 +110,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 
 int main(int argc, char const *argv[]){
 	
-	char message[100] = "the cat says hello";
+	char message[100] = "the wolf";
 	/* starting MPI stuff */
 	int myRank;
 	int numMPI;
