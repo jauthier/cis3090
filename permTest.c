@@ -13,7 +13,6 @@ void generate(int n, char * str){
 		return;
 	}
 	for (int i=1;i<n;i++){
-		printf("%d\n", n);
 		generate(n-1, str);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
