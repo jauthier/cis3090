@@ -83,7 +83,7 @@ void generate(int n, char * str, int rank){
 			MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
 		} else {
 			printf("%s\n", str);
-			for (int j=1;j<numMPI;j++){
+			for (int j=1;j<n;j++){
 				char * msg[26];
 				MPI_Recv(msg,26,MPI_CHAR,j,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 				printf("%s\n", msg);
