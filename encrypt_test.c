@@ -98,7 +98,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 					words = 0;
 				token = strtok(NULL, " ");
 			}*/
-			if (strcmp(ret, "the cat") == 0)
+			if (strcmp(unEnMsg, "the cat") == 0)
 				return ret;
 		}
 		
