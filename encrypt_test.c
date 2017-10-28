@@ -80,10 +80,7 @@ char * swap(char * str, int i, int j){
 // we want the eDict from the main process and the encrypted message
 char * generate(int n, char * str, char * inDict, char * message){  
 	if (n == 2){
-		if (strcmp(str, inDict)==0)
-			return str;
-		else 
-			return NULL;
+		return str;
 	}
 	for (int i=1;i<n;i++){
 		char * ret = generate(n-1, str, inDict, message);
