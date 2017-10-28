@@ -8,7 +8,7 @@ char ** strs;
 
 char * encrypt(char * input);
 char * letterScramble(char * input);
-char * generate(int n, char * str, char * inDict);
+char * generate(int n, char * str, char * inDict, char * message);
 
 /*encription*/
 char * encrypt(char * input){
@@ -77,7 +77,7 @@ char * swap(char * str, int i, int j){
 	return str;
 }
 
-char * generate(int n, char * str, char * inDict){
+char * generate(int n, char * str, char * inDict, char * message){
 	if (n == 2){
 		if (strcmp(str, inDict)==0)
 			return str;
@@ -85,9 +85,23 @@ char * generate(int n, char * str, char * inDict){
 			return NULL;
 	}
 	for (int i=1;i<n;i++){
-		char * ret = generate(n-1, str, inDict);
-		if (ret != NULL && strcmp(ret, inDict)==0)
-			return ret;
+		char * ret = generate(n-1, str, inDict, message);
+		if (ret != NULL){
+			char * unEnMsg = decryption(message,inDict,ret);
+			char * token = strtok(unEnMsg, " ");
+			int words = 1;
+			while (token != NULL){
+				char * cmd;
+				sprintf(cmd, "grep -x %s /usr/share/dict/words", token);
+				int check = system(cmd);
+				if (check != 0)
+					words = 0;
+				token = strtok(NULL, " ");
+			}
+			if (words == 1)
+				return ret;
+		}
+		
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
 		else 
@@ -110,9 +124,11 @@ int main(int argc, char const *argv[]){
 
 	if (myRank != 0){
 		char buff[26];
+		char enMsg[200];
 		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		MPI_Recv(buff,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-		char * ret = generate(numMPI, msg, buff);
+		MPI_Recv(enMsg,200,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		char * ret = generate(numMPI, msg, buff, enMsg);
 		if (ret != NULL){
 			char hold[28];
 			sprintf(hold,"%d:%s",myRank,ret);
@@ -156,8 +172,9 @@ int main(int argc, char const *argv[]){
 		for(int k=1;k<numMPI;k++){
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 			MPI_Send(inDict, strlen(inDict)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
+			MPI_Send(enMsg, strlen(enMsg)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 		}
-		char * ret = generate(numMPI, strs[0], inDict);
+		char * ret = generate(numMPI, strs[0], inDict,enMsg);
 		char buff[26];
 		if (ret == NULL){
 			MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
