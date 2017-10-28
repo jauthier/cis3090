@@ -110,7 +110,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 
 int main(int argc, char const *argv[]){
 	
-	char message[100] = "the cat";
+	char message[100] = "the cat says hello";
 	/* starting MPI stuff */
 	int myRank;
 	int numMPI;
@@ -176,9 +176,9 @@ int main(int argc, char const *argv[]){
 		char buff[26];
 		if (ret == NULL){
 			MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-			printf("%s\n", buff);
+			printf("The encryption dictionary was found by %s\n", buff);
 		} else 
-		printf("%s\n", ret);
+		printf("The encryption dictionary was found by 0:%s\n", ret);
 
 	}
 
