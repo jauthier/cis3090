@@ -90,7 +90,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 			int words = 1;
 			while (token != NULL){
 				char cmd[70];
-				sprintf(cmd, "grep -x %s /usr/share/dict/words", token);
+				sprintf(cmd, "grep -x -q %s /usr/share/dict/words", token);
 				int check = system(cmd);
 				if (check != 0)
 					words = 0;
