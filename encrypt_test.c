@@ -104,8 +104,8 @@ int main(int argc, char const *argv[]){
 	char message[100] = "the cat";
 	char * inDict = encrypt(message);
 	//printf("%s\n", inDict);
-	//char * eDict = letterScramble(inDict);
-	printf("%s\n", eDict);
+	char * eDict = letterScramble(inDict);
+	//printf("%s\n", eDict);
 
 	int len = strlen(message);
 	char * enMsg = malloc(sizeof(char)*(len+1));
