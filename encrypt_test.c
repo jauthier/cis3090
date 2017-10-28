@@ -89,7 +89,7 @@ void generate(int n, char * str, int rank, char * inDict){
 		return;
 	}
 	for (int i=1;i<n-1;i++){
-		generate(n-1, str, rank);
+		generate(n-1, str, rank, inDict);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
 		else 
