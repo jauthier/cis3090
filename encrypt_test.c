@@ -18,8 +18,9 @@ char * encrypt(char * input){
 	int i = 0; // for iterating through the input string
 	int len = strlen(input);
 	for (i=0; i<len; i++){
-
-		if(strstr(inDict, &input[i]) == NULL) {
+		char hold[2] = " ";
+		hold[0] = input[i];
+		if(strstr(inDict, hold) == NULL) {
 			if ((input[i] != ' ')&&(input[i] != '\n'))
 				sprintf(inDict,"%s%c",inDict, input[i]);
 		}
@@ -149,7 +150,7 @@ int main(int argc, char const *argv[]){
 		enMsg[len] = '\0';
 		printf("%s\n", eDict);
 		// each process will get a string starting with a different letter
-		numMPI = strlen(eDict);
+		numMPI = strlen(inDict);
 		// make an array of the strings for each process
 		strs = malloc(sizeof(char *)*numMPI);
 		int i = 0;
