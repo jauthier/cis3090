@@ -8,11 +8,11 @@ char * swap(char * str, int i, int j){
 }
 
 void generate(int n, char * str){
-	if (n == 1){
+	if (n == 2){
 		printf("%s\n", str);
 		return;
 	}
-	for (int i=1;i<n-1;i++){
+	for (int i=1;i<n;i++){
 		printf("%d\n", n);
 		generate(n-1, str);
 		if (n%2 == 0) // n is even
