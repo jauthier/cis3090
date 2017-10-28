@@ -79,10 +79,16 @@ char * swap(char * str, int i, int j){
 
 void generate(int n, char * str, int rank){
 	if (n == 1){
-		if (rank != 0)
+		if (rank != 0){
 			MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
-		else
+		} else {
 			printf("%s\n", str);
+			for (int j=1;j<numMPI;j++){
+				char * msg[26];
+				MPI_Recv(msg,26,MPI_CHAR,j,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+				printf("%s\n", msg);
+			}
+		}
 		return;
 	}
 	for (int i=1;i<n-1;i++){
@@ -92,15 +98,6 @@ void generate(int n, char * str, int rank){
 		else 
 			str = swap(str, 1, n-1);
 	}
-}
-
-int factorial(int num){
-	int f = 1;
-
-	for (int i=0;i<=num;i++){
-		f = f * num;
-	}
-	return num;
 }
 
 int main(int argc, char const *argv[]){
@@ -143,7 +140,7 @@ int main(int argc, char const *argv[]){
 		strs[j][numMPI] = '\0';
 	}
 
-	// pushed up to here -- Test it
+	/* starting MPI stuff */
 	int myRank;
 	char msg[26];
 
@@ -160,11 +157,7 @@ int main(int argc, char const *argv[]){
 		// need to send the other processes their strings
 		for(int k=1;k<numMPI;k++){
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
-
-			for (int l=0;l<factorial(numMPI-1);l++){
-				MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-				printf("%s\n", msg);
-			}
+			generate(numMPI, strs[0],0);
 		}
 	}
 
