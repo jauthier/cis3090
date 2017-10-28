@@ -149,7 +149,7 @@ int main(int argc, char const *argv[]){
 		//MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 		// get all possible combinations
 
-		generate(numMPI, strs[myRank], 0);
+		generate(numMPI, strs[myRank], 0, inDict);
 		MPI_Send(strs[myRank], strlen(strs[myRank])+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
 
 	} else {
@@ -160,7 +160,7 @@ int main(int argc, char const *argv[]){
 			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 			printf("%s\n", msg);
 		}
-		generate(numMPI, strs[0],0);
+		generate(numMPI, strs[0],0, inDict);
 		MPI_Recv(msg,26,MPI_CHAR,MPI_ANY_SOURCE,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
 	}
 	MPI_Finalize();
