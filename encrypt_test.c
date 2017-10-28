@@ -77,11 +77,19 @@ char * swap(char * str, int i, int j){
 	return str;
 }
 
-void generate(int n, char * str, int count, char ** strArr){
+void generate(int n, char * str, int rank, char * inDict){
 	if (n == 2){
-		char * hold = malloc(sizeof(char)*(strlen(str)+1));
-		strcpy(hold, str);
-		strArr[count] = hold;
+		if (rank == 0){
+			if (strcmp(str,inDict)==0){
+				sprintf(str,"%d:%s", rank,str);
+				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+			}
+		} else {
+			if (strcmp(str,inDict)==0){
+				sprintf(str,"%d:%s", rank,str);
+				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+			}
+		}
 		return;
 	}
 	for (int i=1;i<n;i++){
@@ -93,56 +101,12 @@ void generate(int n, char * str, int count, char ** strArr){
 	}
 }
 
-int factorial(int num){
-	int sum = 1;
-	for (int i=1;i<=num;i++){
-		sum = sum * i;
-	}
-	return sum;
-}
-
 int main(int argc, char const *argv[]){
+	
 	char message[100] = "the cat";
-	char * inDict = encrypt(message);
-	//printf("%s\n", inDict);
-	char * eDict = letterScramble(inDict);
-	//printf("%s\n", eDict);
-
-	int len = strlen(message);
-	char * enMsg = malloc(sizeof(char)*(len+1));
-	for (int i=0;i<len;i++){
-		if (message[i] != ' ' && message[i] != '\n'){
-			int pos = getPos(message[i], inDict);
-			enMsg[i] = eDict[pos];
-		} else {
-			enMsg[i] = message[i];
-		}
-	}
-	enMsg[len] = '\0';
-	//printf("%s\n", enMsg);
-
-
-	// each process will get a string starting with a different letter
-	int numMPI = strlen(eDict);
-	// make an array of the strings for each process
-	strs = malloc(sizeof(char *)*numMPI);
-	int i = 0;
-	for (i=0; i<numMPI; i++){
-		strs[i] = malloc(sizeof(char)*(numMPI+1));
-	}
-
-	strcpy(strs[0], eDict);
-	i = 0;
-	for (int j=1;j<numMPI;j++){ // skip the first str
-		for (i=0;i<numMPI-1;i++){
-			strs[j][i] = strs[j-1][i+1];
-		}
-		strs[j][numMPI-1] = strs[j-1][0];
-		strs[j][numMPI] = '\0';
-	}
-
 	/* starting MPI stuff */
 	int myRank;
+	int numMPI;
 	char msg[26];
 
 	MPI_Init(NULL, NULL);
@@ -150,43 +114,52 @@ int main(int argc, char const *argv[]){
 	MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
 
 	if (myRank != 0){
-		//MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-		// get all possible combinations
-		int total = factorial(numMPI-1);
-		char ** arr = malloc(sizeof(char *)*total);
-		generate(numMPI, strs[myRank], total-1, arr);
-		i=0;
-		for (i=0;i<total;i++){
-			if (strcmp(arr[i], inDict)==0)
-				printf("Found in %d: %s\n",myRank,arr[i]);
-		}
+		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		generate(numMPI, msg, myRank, message);
 
 	} else {
-		// need to send the other processes their strings
-		printf("%s\n", strs[0]);
-		/*for(int k=1;k<numMPI;k++){
-			//MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
-			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-			printf("%s\n", msg);
-		}*/
-		int total = factorial(numMPI-1);
-		char ** arr = malloc(sizeof(char *)*total);
-		generate(numMPI, strs[0],total-1, arr);
-		i=0;
-		for (i=0;i<total;i++){
-			if (strcmp(arr[i], inDict)==0)
-				printf("Found in %d: %s\n",myRank,arr[i]);
+		char * inDict = encrypt(message);
+		char * eDict = letterScramble(inDict);
+		int len = strlen(message);
+		char * enMsg = malloc(sizeof(char)*(len+1));
+		for (int i=0;i<len;i++){
+			if (message[i] != ' ' && message[i] != '\n'){
+				int pos = getPos(message[i], inDict);
+				enMsg[i] = eDict[pos];
+			} else {
+				enMsg[i] = message[i];
+			}
 		}
+		enMsg[len] = '\0';
+
+		// each process will get a string starting with a different letter
+		numMPI = strlen(eDict);
+		// make an array of the strings for each process
+		strs = malloc(sizeof(char *)*numMPI);
+		int i = 0;
+		for (i=0; i<numMPI; i++){
+			strs[i] = malloc(sizeof(char)*(numMPI+1));
+		}
+
+		strcpy(strs[0], eDict);
+		i = 0;
+		for (int j=1;j<numMPI;j++){ // skip the first str
+			for (i=0;i<numMPI-1;i++){
+				strs[j][i] = strs[j-1][i+1];
+			}
+			strs[j][numMPI-1] = strs[j-1][0];
+			strs[j][numMPI] = '\0';
+		}
+
+		for(int k=1;k<numMPI;k++){
+			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
+		}
+		generate(numMPI, strs[0], myRank, message);
+		char buff[26];
+		MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+
 	}
+
 	MPI_Finalize();
-
-
-
-	free(inDict);
-	free(eDict);
-	free(enMsg);
 	return 0;
 }
-
-
-
