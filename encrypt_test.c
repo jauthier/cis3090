@@ -171,10 +171,10 @@ int main(int argc, char const *argv[]){
 
 		for(int k=1;k<numMPI;k++){
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
-			MPI_Send(inDict, strlen(inDict)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
+			MPI_Send(eDict, strlen(eDict)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 			MPI_Send(enMsg, strlen(enMsg)+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 		}
-		char * ret = generate(numMPI, strs[0], inDict,enMsg);
+		char * ret = generate(numMPI, strs[0], eDict,enMsg);
 		char buff[26];
 		if (ret == NULL){
 			MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
