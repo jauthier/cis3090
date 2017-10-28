@@ -74,7 +74,7 @@ char * swap(char * str, int i, int j){
 	char temp = str[i];
 	str[i] = str[j];
 	str[j] = temp;
-	retrun str;
+	return str;
 }
 
 void generate(int n, char * str, int rank){
