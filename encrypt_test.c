@@ -88,7 +88,7 @@ char * generate(int n, char * str, char * inDict, char * message){
 		char * ret = generate(n-1, str, inDict, message);
 		if (ret != NULL){
 			char * unEnMsg = decryption(message,inDict,ret);
-			char * token = strtok(unEnMsg, " ");
+			/*char * token = strtok(unEnMsg, " ");
 			int words = 1;
 			while (token != NULL){
 				char * cmd;
@@ -97,8 +97,8 @@ char * generate(int n, char * str, char * inDict, char * message){
 				if (check != 0)
 					words = 0;
 				token = strtok(NULL, " ");
-			}
-			if (words == 1)
+			}*/
+			if (strcmp(ret, "the cat") == 0)
 				return ret;
 		}
 		
