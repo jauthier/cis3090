@@ -8,7 +8,7 @@ char ** strs;
 
 char * encrypt(char * input);
 char * letterScramble(char * input);
-void generate(int n, char * str, int rank, char * inDict);
+void generate(int n, char * str, int count, char ** strArr);
 
 /*encription*/
 char * encrypt(char * input){
