@@ -78,7 +78,7 @@ char * swap(char * str, int i, int j){
 }
 
 void generate(int n, char * str, int rank, char * inDict){
-	if (n == 1){
+	if (n == 2){
 		if (rank != 0){
 			if (strcmp(str, inDict)==0)
 				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,1,MPI_COMM_WORLD);
@@ -88,7 +88,7 @@ void generate(int n, char * str, int rank, char * inDict){
 		}
 		return;
 	}
-	for (int i=1;i<n-1;i++){
+	for (int i=1;i<n;i++){
 		generate(n-1, str, rank, inDict);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
