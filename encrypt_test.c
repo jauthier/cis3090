@@ -8,7 +8,7 @@ char ** strs;
 
 char * encrypt(char * input);
 char * letterScramble(char * input);
-void generate(int n, char * str, int rank, char * inDict);
+char * generate(int n, char * str, int rank, char * inDict);
 
 /*encription*/
 char * encrypt(char * input){
@@ -77,28 +77,23 @@ char * swap(char * str, int i, int j){
 	return str;
 }
 
-void generate(int n, char * str, int rank, char * inDict){
+char * generate(int n, char * str, char * inDict){
 	if (n == 2){
-		if (rank == 0){
-			if (strcmp(str,inDict)==0){
-				sprintf(str,"%d:%s", rank,str);
-				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
-			}
-		} else {
-			if (strcmp(str,inDict)==0){
-				sprintf(str,"%d:%s", rank,str);
-				MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
-			}
-		}
-		return;
+		if (strcmp(str, inDict)==0)
+			return str;
+		else 
+			return NULL;
 	}
 	for (int i=1;i<n;i++){
-		generate(n-1, str, rank, inDict);
+		char * ret = generate(n-1, str, rank, inDict);
+		if (ret != NULL && strcmp(ret, inDict)==0)
+			return ret;
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
 		else 
 			str = swap(str, 1, n-1);
 	}
+	return NULL;
 }
 
 int main(int argc, char const *argv[]){
@@ -115,7 +110,11 @@ int main(int argc, char const *argv[]){
 
 	if (myRank != 0){
 		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-		generate(numMPI, msg, myRank, message);
+		char * ret = generate(numMPI, msg, myRank, message);
+		if (ret != NULL){
+			sprintf(ret,"%d:%s",myRank,ret);
+			MPI_Send(ret, strlen(ret)+1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+		}
 
 	} else {
 		char * inDict = encrypt(message);
@@ -154,9 +153,13 @@ int main(int argc, char const *argv[]){
 		for(int k=1;k<numMPI;k++){
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 		}
-		generate(numMPI, strs[0], myRank, message);
+		char * ret = generate(numMPI, strs[0], myRank, message);
 		char buff[26];
-		MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		if (ret == NULL){
+			MPI_Recv(buff,26,MPI_CHAR,MPI_ANY_SOURCE,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+			printf("%s\n", buff);
+		} else 
+		printf("%s\n", ret);
 
 	}
 
