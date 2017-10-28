@@ -85,7 +85,7 @@ void generate(int n, char * str, int count, char ** strArr){
 		return;
 	}
 	for (int i=1;i<n;i++){
-		generate(n-1, str, rank, count -1, strArr);
+		generate(n-1, str, count -1, strArr);
 		if (n%2 == 0) // n is even
 			str = swap(str, i, n-1);
 		else 
