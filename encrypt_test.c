@@ -8,6 +8,7 @@ char ** strs;
 
 char * encrypt(char * input);
 char * letterScramble(char * input);
+void generate(int n, char * str, int rank);
 
 /*encription*/
 char * encrypt(char * input){
@@ -69,6 +70,39 @@ char * decryption(char * enMsg, char * inDict, char * eDict){
 	return ret;
 }
 
+char * swap(char * str, int i, int j){
+	char temp = str[i];
+	str[i] = str[j];
+	str[j] = temp;
+	retrun str;
+}
+
+void generate(int n, char * str, int rank){
+	if (n == 1){
+		if (rank != 0)
+			MPI_Send(str, strlen(str)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+		else
+			printf("%s\n", str);
+		return;
+	}
+	for (int i=1;i<n-1;i++){
+		generate(n-1, str, rank);
+		if (n%2 == 0) // n is even
+			str = swap(str, i, n-1);
+		else 
+			str = swap(str, 1, n-1);
+	}
+}
+
+int factorial(int num){
+	int f = 1;
+
+	for (int i=0;i<=num;i++){
+		f = f * num;
+	}
+	return num;
+}
+
 int main(int argc, char const *argv[]){
 	char message[100] = "the cat";
 	char * inDict = encrypt(message);
@@ -108,10 +142,6 @@ int main(int argc, char const *argv[]){
 		strs[j][numMPI-1] = strs[j-1][0];
 		strs[j][numMPI] = '\0';
 	}
-	i=0;
-	for(i=0;i<numMPI;i++){
-		printf("%s\n", strs[i]);
-	}
 
 	// pushed up to here -- Test it
 	int myRank;
@@ -123,16 +153,18 @@ int main(int argc, char const *argv[]){
 
 	if (myRank != 0){
 		MPI_Recv(msg,26,MPI_CHAR,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-		MPI_Send(msg, strlen(msg)+1, MPI_CHAR,0,0,MPI_COMM_WORLD);
+		// get all possible combinations
+		generate(numMPI, msg, myRank);
+
 	} else {
-		printf("%s\n", strs[myRank]);
 		// need to send the other processes their strings
 		for(int k=1;k<numMPI;k++){
-			printf("%s\n", strs[k]);
 			MPI_Send(strs[k], strlen(strs[k])+1, MPI_CHAR,k,0,MPI_COMM_WORLD);
 
-			MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-			printf("%s\n", msg);
+			for (int l=0;l<factorial(numMPI-1);l++){
+				MPI_Recv(msg,26,MPI_CHAR,k,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+				printf("%s\n", msg);
+			}
 		}
 	}
 
@@ -146,4 +178,6 @@ int main(int argc, char const *argv[]){
 	free(enMsg);
 	return 0;
 }
+
+
 
