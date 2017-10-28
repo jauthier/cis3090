@@ -116,7 +116,7 @@ int main(int argc, char const *argv[]){
 		if (ret != NULL){
 			char hold[28];
 			sprintf(hold,"%d:%s",myRank,ret);
-			MPI_Send(ret, strlen(ret)+1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+			MPI_Send(hold, strlen(hold)+1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 		}
 
 	} else {
