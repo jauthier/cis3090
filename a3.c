@@ -47,8 +47,9 @@ int main(int argc, char * argv[]){
 		printf("Please provide the number of threads and the size of the the matrix.\n");
 		exit(0);
 	}
-	int ** matrix = initMatrix(5);
-	printMatrix(matrix);
-	deleteMatrix(matrix);
+	int size = 5;
+	int ** matrix = initMatrix(size);
+	printMatrix(matrix, size);
+	deleteMatrix(matrix, size);
 	return 0;
 }
