@@ -164,18 +164,18 @@ int main(int argc, char * argv[]){
 		t12 = end - start;
 		printf("       %ld       %ld       %ld\n", t10,t11,t12);
 
-		deleteMatrix(sum1);
-		deleteMatrix(sum2);
-		deleteMatrix(sum3);
-		deleteMatrix(sum4);
-		deleteMatrix(sum5);
-		deleteMatrix(sum6);
-		deleteMatrix(sum7);
-		deleteMatrix(sum8);
-		deleteMatrix(sum9);
-		deleteMatrix(sum10);
-		deleteMatrix(sum11);
-		deleteMatrix(sum12);
+		deleteMatrix(sum1,100);
+		deleteMatrix(sum2,100);
+		deleteMatrix(sum3,100);
+		deleteMatrix(sum4,1000);
+		deleteMatrix(sum5,1000);
+		deleteMatrix(sum6,1000);
+		deleteMatrix(sum7,10000);
+		deleteMatrix(sum8,10000);
+		deleteMatrix(sum9,10000);
+		deleteMatrix(sum10,20000);
+		deleteMatrix(sum11,20000);
+		deleteMatrix(sum12,20000);
 
 	} else {
 		if (argc != 3){
