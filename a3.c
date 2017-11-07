@@ -64,6 +64,23 @@ void deleteVector(int * vector, int size){
 	free(vector);
 }
 
+/* --------- Matrix Multiplication --------- */
+
+int * multiply(int ** matrix, int * vector, int size){
+	int * sum = malloc(sizeof(int)*size);
+	int i = 0;
+	for (i=0;i<size;i++){
+		int num = 0;
+		int j = 0;
+		for (j=0;j<size;j++){
+			num = num + (matrix[i][j]*vector[j]);
+		}
+		vector[i] = num;
+	}
+	return sum;
+}
+
+
 
 int main(int argc, char * argv[]){
 	
@@ -80,5 +97,12 @@ int main(int argc, char * argv[]){
 	int * vector = initVector(size);
 	printVector(vector,size);
 	deleteVector(vector,size);
+	
+	printf("\n");
+	int * sum = multiply(matrix, vector, size);
+	printVector(sum,size);
+	deleteVector(sum,size);
+
+
 	return 0;
 }
