@@ -11,7 +11,7 @@ int ** initMatrix(int size){
 		int j = 0;
 		for (j=0;j<size;j++){
 			//get random num
-			int num = rand()%21;
+			int num = rand()%10;
 			matrix[i][j] = num;
 		}
 	}
