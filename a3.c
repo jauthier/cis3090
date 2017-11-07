@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+/* --------- Matrix Functions --------- */
+
 int ** initMatrix(int size){
 	srand(time(NULL));
 	int ** matrix = malloc(sizeof(int *)*size);
@@ -17,10 +19,6 @@ int ** initMatrix(int size){
 	}
 	return matrix;
 }
-
-/*int * initVector(int size){
-
-}*/
 
 void printMatrix(int ** matrix, int size){
 	int i = 0;
@@ -41,6 +39,32 @@ void deleteMatrix(int ** matrix, int size){
 	free(matrix);
 }
 
+/* --------- Vector Functions --------- */
+
+int * initVector(int size){\
+	srand(time(NULL));
+	int * vector = malloc(sizeof(int)*size);
+	int i = 0;
+	for (i=0;i<size;i++){
+		//get random num
+		int num = rand()%10;
+		vector[i] = num;
+	}
+	return vector;
+}
+
+void printVector(int * vector, int size){
+	int i = 0;
+	for (i=0;i<size;i++){
+		printf("%d\n", vector[i]);
+	}
+}
+
+void deleteVector(int * vector, int size){
+	free(vector);
+}
+
+
 int main(int argc, char * argv[]){
 	
 	if (argc < 1){
@@ -51,5 +75,10 @@ int main(int argc, char * argv[]){
 	int ** matrix = initMatrix(size);
 	printMatrix(matrix, size);
 	deleteMatrix(matrix, size);
+
+	printf("\n");
+	int * vector = initVector(size);
+	printVector(vector,size);
+	deleteVector(vector,size);
 	return 0;
 }
