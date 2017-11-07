@@ -72,7 +72,7 @@ int * multiply(int ** matrix, int * vector, int size, int numThreads){
 	for (i=0;i<size;i++){
 		int num = 0;
 		int j = 0;
-#	pragma omp parallel for num_threads(numThreads) \ reduction(+: num)
+#	pragma omp parallel for num_threads(numThreads) \reduction(+: num)
 		for (j=0;j<size;j++){
 			num = num + (matrix[i][j]*vector[j]);
 		}
