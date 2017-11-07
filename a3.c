@@ -91,16 +91,18 @@ int main(int argc, char * argv[]){
 	int size = 5;
 	int ** matrix = initMatrix(size);
 	printMatrix(matrix, size);
-	deleteMatrix(matrix, size);
 
 	printf("\n");
 	int * vector = initVector(size);
 	printVector(vector,size);
-	deleteVector(vector,size);
 	
 	printf("\n");
 	int * sum = multiply(matrix, vector, size);
 	printVector(sum,size);
+	
+
+	deleteMatrix(matrix, size);
+	deleteVector(vector,size);
 	deleteVector(sum,size);
 
 
