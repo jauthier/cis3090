@@ -6,7 +6,7 @@ int ** initMatrix(int size){
 	srand(time(NULL));
 	int ** matrix = malloc(sizeof(int *)*size);
 	int i = 0;
-	for (i=0;i<size,i++){
+	for (i=0;i<size;i++){
 		matrix[i] = malloc(sizeof(int)*size);
 		int j = 0;
 		for (j=0;j<size;j++){
@@ -24,7 +24,7 @@ int * initVector(int size){
 
 void printMAtrix(int ** matrix, int size){
 	int i = 0;
-	for (i=0;i<size,i++){
+	for (i=0;i<size;i++){
 		int j = 0;
 		for (j=0;j<size;j++){
 			printf("%d", matrix[i][j]);
