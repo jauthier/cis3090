@@ -106,7 +106,7 @@ int main(int argc, char * argv[]){
 
 		printf("Size        Threads\n");
 		printf("       1       2       4\n");
-		time_t = t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12;
+		time_t t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12;
 
 		time_t start = time(NULL);
 		int * sum1 = multiply(m1,v1,100,1);
@@ -163,6 +163,19 @@ int main(int argc, char * argv[]){
 		end = time(NULL);
 		t12 = end - start;
 		printf("       %ld       %ld       %ld\n", t10,t11,t12);
+
+		deleteMatrix(sum1);
+		deleteMatrix(sum2);
+		deleteMatrix(sum3);
+		deleteMatrix(sum4);
+		deleteMatrix(sum5);
+		deleteMatrix(sum6);
+		deleteMatrix(sum7);
+		deleteMatrix(sum8);
+		deleteMatrix(sum9);
+		deleteMatrix(sum10);
+		deleteMatrix(sum11);
+		deleteMatrix(sum12);
 
 	} else {
 		if (argc != 3){
