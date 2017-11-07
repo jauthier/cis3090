@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#include <omp.h>
 
 /* --------- Matrix Functions --------- */
 
@@ -64,12 +66,13 @@ void deleteVector(int * vector, int size){
 
 /* --------- Matrix Multiplication --------- */
 
-int * multiply(int ** matrix, int * vector, int size){
+int * multiply(int ** matrix, int * vector, int size, int numThreads){
 	int * sum = malloc(sizeof(int)*size);
 	int i = 0;
 	for (i=0;i<size;i++){
 		int num = 0;
 		int j = 0;
+#	pragma omp parallel for num_threads(numThreads) \ reduction(+: num)
 		for (j=0;j<size;j++){
 			num = num + (matrix[i][j]*vector[j]);
 		}
@@ -82,28 +85,47 @@ int * multiply(int ** matrix, int * vector, int size){
 
 int main(int argc, char * argv[]){
 	
-	if (argc < 1){
+	if (argc < 2){
 		printf("Please provide the number of threads and the size of the the matrix.\n");
 		exit(0);
 	}
+
 	srand(time(NULL));
-	int size = 5;
-	int ** matrix = initMatrix(size);
-	printMatrix(matrix, size);
+	if (strcmp(argv[1], "-g")==0){
 
-	printf("\n");
-	int * vector = initVector(size);
-	printVector(vector,size);
+		/*int ** m1 = initMatrix(100);
+		int ** m2 = initMatrix(1000);
+		int ** m3 = initMatrix(10000);
+		int ** m4 = initMatrix(20000);
+
+		int * v1 = initVector(100);
+		int * v2 = initVector(1000);
+		int * v3 = initVector(10000);
+		int * v4 = initVector(20000);
+
+		time_t start = time(NULL);*/
+
+
+	} else {
+		if (argc != 3){
+			printf("Please provide the number of threads and the size of the the matrix.\n");
+			exit(0);
+		}
+		int numThreads = atoi(argv[1]);
+		int size = atoi(argv[2]);
 	
-	printf("\n");
-	int * sum = multiply(matrix, vector, size);
-	printVector(sum,size);
-	
-
-	deleteMatrix(matrix, size);
-	deleteVector(vector,size);
-	deleteVector(sum,size);
-
+		int ** matrix = initMatrix(size);
+		int * vector = initVector(size);
+		int * sum = multiply(matrix, vector, size, numThreads);
+		printMatrix(matrix, size);
+		printf("\nX\n");
+		printVector(vector,size);
+		printf("\n=\n");
+		printVector(sum,size);
+		deleteMatrix(matrix, size);
+		deleteVector(vector,size);
+		deleteVector(sum,size);
+	}
 
 	return 0;
 }
