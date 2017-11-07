@@ -18,11 +18,11 @@ int ** initMatrix(int size){
 	return matrix;
 }
 
-int * initVector(int size){
+/*int * initVector(int size){
 
-}
+}*/
 
-void printMAtrix(int ** matrix, int size){
+void printMatrix(int ** matrix, int size){
 	int i = 0;
 	for (i=0;i<size;i++){
 		int j = 0;
@@ -33,6 +33,13 @@ void printMAtrix(int ** matrix, int size){
 	}	
 }
 
+void deleteMatrix(int ** matrix, int size){
+	int i = 0;
+	for (i=0;i<size;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+}
 
 int main(int argc, char * argv[]){
 	
@@ -40,7 +47,8 @@ int main(int argc, char * argv[]){
 		printf("Please provide the number of threads and the size of the the matrix.\n");
 		exit(0);
 	}
-
-
-
+	int ** matrix = initMatrix(5);
+	printMatrix(matrix);
+	deleteMatrix(matrix);
+	return 0;
 }
