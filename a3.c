@@ -122,9 +122,9 @@ int main(int argc, char * argv[]){
 		t3 = end - start;
 		printf("       %ld       %ld       %ld\n", t1,t2,t3);
 
-		ime_t start = time(NULL);
+		start = time(NULL);
 		int * sum4 = multiply(m2,v2,1000,1);
-		time_t end = time(NULL);
+		end = time(NULL);
 		t4 = end - start;
 		start = time(NULL);
 		int * sum5 = multiply(m2,v2,1000,2);
@@ -136,9 +136,9 @@ int main(int argc, char * argv[]){
 		t6 = end - start;
 		printf("       %ld       %ld       %ld\n", t4,t5,t6);
 
-		ime_t start = time(NULL);
+		start = time(NULL);
 		int * sum7 = multiply(m3,v3,10000,1);
-		time_t end = time(NULL);
+		end = time(NULL);
 		t7 = end - start;
 		start = time(NULL);
 		int * sum8 = multiply(m3,v3,10000,2);
@@ -150,9 +150,9 @@ int main(int argc, char * argv[]){
 		t9 = end - start;
 		printf("       %ld       %ld       %ld\n", t7,t8,t9);
 
-		ime_t start = time(NULL);
+		start = time(NULL);
 		int * sum10 = multiply(m4,v4,20000,1);
-		time_t end = time(NULL);
+		end = time(NULL);
 		t10 = end - start;
 		start = time(NULL);
 		int * sum11 = multiply(m4,v4,20000,2);
