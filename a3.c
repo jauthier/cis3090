@@ -5,7 +5,6 @@
 /* --------- Matrix Functions --------- */
 
 int ** initMatrix(int size){
-	srand(time(NULL));
 	int ** matrix = malloc(sizeof(int *)*size);
 	int i = 0;
 	for (i=0;i<size;i++){
@@ -42,7 +41,6 @@ void deleteMatrix(int ** matrix, int size){
 /* --------- Vector Functions --------- */
 
 int * initVector(int size){\
-	srand(time(NULL));
 	int * vector = malloc(sizeof(int)*size);
 	int i = 0;
 	for (i=0;i<size;i++){
@@ -88,6 +86,7 @@ int main(int argc, char * argv[]){
 		printf("Please provide the number of threads and the size of the the matrix.\n");
 		exit(0);
 	}
+	srand(time(NULL));
 	int size = 5;
 	int ** matrix = initMatrix(size);
 	printMatrix(matrix, size);
