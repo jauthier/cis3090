@@ -93,18 +93,76 @@ int main(int argc, char * argv[]){
 	srand(time(NULL));
 	if (strcmp(argv[1], "-g")==0){
 
-		/*int ** m1 = initMatrix(100);
+		/* initialize matriceis */
+		int ** m1 = initMatrix(100);
 		int ** m2 = initMatrix(1000);
 		int ** m3 = initMatrix(10000);
 		int ** m4 = initMatrix(20000);
-
+		/* initialize vectors */
 		int * v1 = initVector(100);
 		int * v2 = initVector(1000);
 		int * v3 = initVector(10000);
 		int * v4 = initVector(20000);
 
-		time_t start = time(NULL);*/
+		printf("Size        Threads\n");
+		printf("       1       2       4\n");
+		time_t = t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12;
 
+		time_t start = time(NULL);
+		int * sum1 = multiply(m1,v1,100,1);
+		time_t end = time(NULL);
+		t1 = end - start;
+		start = time(NULL);
+		int * sum2 = multiply(m1,v1,100,2);
+		end = time(NULL);
+		t2 = end - start;
+		start = time(NULL);
+		int * sum3 = multiply(m1,v1,100,4);
+		end = time(NULL);
+		t3 = end - start;
+		printf("       %ld       %ld       %ld\n", t1,t2,t3);
+
+		ime_t start = time(NULL);
+		int * sum4 = multiply(m2,v2,1000,1);
+		time_t end = time(NULL);
+		t4 = end - start;
+		start = time(NULL);
+		int * sum5 = multiply(m2,v2,1000,2);
+		end = time(NULL);
+		t5 = end - start;
+		start = time(NULL);
+		int * sum6 = multiply(m2,v2,1000,4);
+		end = time(NULL);
+		t6 = end - start;
+		printf("       %ld       %ld       %ld\n", t4,t5,t6);
+
+		ime_t start = time(NULL);
+		int * sum7 = multiply(m3,v3,10000,1);
+		time_t end = time(NULL);
+		t7 = end - start;
+		start = time(NULL);
+		int * sum8 = multiply(m3,v3,10000,2);
+		end = time(NULL);
+		t8 = end - start;
+		start = time(NULL);
+		int * sum9 = multiply(m3,v3,10000,4);
+		end = time(NULL);
+		t9 = end - start;
+		printf("       %ld       %ld       %ld\n", t7,t8,t9);
+
+		ime_t start = time(NULL);
+		int * sum10 = multiply(m4,v4,20000,1);
+		time_t end = time(NULL);
+		t10 = end - start;
+		start = time(NULL);
+		int * sum11 = multiply(m4,v4,20000,2);
+		end = time(NULL);
+		t11 = end - start;
+		start = time(NULL);
+		int * sum12 = multiply(m4,v4,20000,4);
+		end = time(NULL);
+		t12 = end - start;
+		printf("       %ld       %ld       %ld\n", t10,t11,t12);
 
 	} else {
 		if (argc != 3){
