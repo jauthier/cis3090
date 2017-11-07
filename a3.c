@@ -75,7 +75,7 @@ int * multiply(int ** matrix, int * vector, int size){
 		for (j=0;j<size;j++){
 			num = num + (matrix[i][j]*vector[j]);
 		}
-		vector[i] = num;
+		sum[i] = num;
 	}
 	return sum;
 }
