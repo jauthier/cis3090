@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-#ifdef __APPLE__
 #include < OpenCL/opencl.h >
+
+/*#ifdef __APPLE__
+
 #else
 #include < CL/cl.h >
-#endif
+#endif*/
 
 /* --------- Matrix Functions --------- */
 
@@ -261,16 +262,16 @@ int main(int argc, char * argv[]){
 	
 		int ** matrix = initMatrix(size);
 		int * vector = initVector(size);
-		
+		int * product = multiply(matrix,vector,size,numThreads)
 
 		printMatrix(matrix, size);
 		printf("\nX\n");
 		printVector(vector,size);
 		printf("\n=\n");
-		printVector(sum,size);
+		printVector(product,size);
 		deleteMatrix(matrix, size);
 		deleteVector(vector,size);
-		deleteVector(sum,size);
+		deleteVector(product,size);
 	}
 
 	return 0;
