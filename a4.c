@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+
+#ifdef __APPLE__
 #include < OpenCL/opencl.h >
-
-/*#ifdef __APPLE__
-
 #else
 #include < CL/cl.h >
-#endif*/
+#endif
 
 /* --------- Matrix Functions --------- */
 
