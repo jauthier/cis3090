@@ -4,50 +4,42 @@
 #include <string.h>
 
 #ifdef __APPLE__
-#include < OpenCL/opencl.h >
+#include <OpenCL/opencl.h>
 #else
-#include < CL/cl.h >
+#include <CL/cl.h>
 #endif
+
 
 /* --------- Matrix Functions --------- */
 
-int ** initMatrix(int size){
-	int ** matrix = malloc(sizeof(int *)*size);
+int * initMatrix(int size){
+	int * matrix = malloc(sizeof(int )*size*size);
 	int i = 0;
-	for (i=0;i<size;i++){
-		matrix[i] = malloc(sizeof(int)*size);
-		int j = 0;
-		for (j=0;j<size;j++){
-			//get random num
-			int num = rand()%10;
-			matrix[i][j] = num;
-		}
+	for (i=0;i<(size*size);i++){
+		//get random num
+		int num = rand()%10;
+		matrix[i] = num;
+		
 	}
 	return matrix;
 }
 
-void printMatrix(int ** matrix, int size){
+void printMatrix(int * matrix, int size){
 	int i = 0;
-	for (i=0;i<size;i++){
-		int j = 0;
-		for (j=0;j<size;j++){
-			printf("%d", matrix[i][j]);
-		}
-		printf("\n");
+	for (i=0;i<(size*size);i++){
+		printf("%d", matrix[i]);
+		if ((i+1)%size == 0)
+			printf("\n");
 	}	
 }
 
-void deleteMatrix(int ** matrix, int size){
-	int i = 0;
-	for (i=0;i<size;i++){
-		free(matrix[i]);
-	}
+void deleteMatrix(int * matrix, int size){
 	free(matrix);
 }
 
 /* --------- Vector Functions --------- */
 
-int * initVector(int size){\
+int * initVector(int size){
 	int * vector = malloc(sizeof(int)*size);
 	int i = 0;
 	for (i=0;i<size;i++){
@@ -69,27 +61,19 @@ void deleteVector(int * vector, int size){
 	free(vector);
 }
 
-int * multiply(int ** matrix, int * vector, int size, int numThreads){
+int * multiply(int * matrix, int * vector, int size, int numThreads){
 
-	program_size = sizeof(char)*450;
-	char * codeStr = malloc();
-	strcpy(codeStr,"__kernel void matrixMultiplication(__global int ** matrix,
-	 __global int * vector, __global *product,int size, int numThreads){\n
-	 	int id = get_global_id(0);\n
-	 	printf(\"%d\n\", id);
-	 	int start = (size/numThreads)*tread;\n
-	 	int end = ((size/numThreads)*(tread+1))-1;\n
-		int i = start;\n
-		for (i=start;i<end;i++){\n
-			int num = 0;\n
-			int j = 0;\n
-			for (j=0;j<size;j++){\n
-				num = num + (matrix[i][j]*vector[j]);\n
-			}\n
-			product[i] = num;\n
-		}\n
-	}\n");
-
+	char filename[12] = "multiply.cl";
+    FILE * fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("could not open file\n");
+        exit(0);
+    }
+    
+    size_t program_size = sizeof(char)*500;
+	char * codeStr = malloc(sizeof(char)*500);
+    int len = fread(codeStr,1,sizeof(char)*500,fp);
+    fclose(fp);
 	//opencl setup
 	// OpenCL specific variables
 	cl_context context = NULL;
@@ -97,9 +81,10 @@ int * multiply(int ** matrix, int * vector, int size, int numThreads){
 	cl_device_id device_id = NULL;
 	cl_platform_id platform_id = NULL;
 	cl_program program = NULL;
+    cl_kernel kernel = NULL;
 	cl_uint ret_num_devices;
 	cl_uint ret_num_platforms;
-	cl_int err
+    cl_int err;
 
 	/* Get Platform and Device Info */
 	err = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
@@ -119,35 +104,57 @@ int * multiply(int ** matrix, int * vector, int size, int numThreads){
 	cl_mem memVector = clCreateBuffer(context, CL_MEM_READ_WRITE, size * sizeof(int), NULL, &err);
 	cl_mem memProduct = clCreateBuffer(context, CL_MEM_READ_WRITE, size * sizeof(int), NULL, &err);
 	cl_mem memSize = clCreateBuffer(context, CL_MEM_READ_WRITE,  sizeof(int), NULL, &err);
-	cl_mem memNumT = clCreateBuffer(context, CL_MEM_READ_WRITE,  sizeof(int), NULL, &err);
+	//cl_mem memNumT = clCreateBuffer(context, CL_MEM_READ_WRITE,  sizeof(int), NULL, &err);
 
 	/* Write to memory buffer */
 	err = clEnqueueWriteBuffer(command_queue,memMatrix, CL_TRUE, 0, size * size * sizeof(int), matrix, 0, NULL, NULL);
    	err = clEnqueueWriteBuffer(command_queue, memVector, CL_TRUE, 0, size * sizeof(int), vector, 0, NULL, NULL);
 	err = clEnqueueWriteBuffer(command_queue, memSize, CL_TRUE, 0, sizeof(int), &size, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(command_queue, memNumT, CL_TRUE, 0, sizeof(int), &numThreads, 0, NULL, NULL);
+	//err = clEnqueueWriteBuffer(command_queue, memNumT, CL_TRUE, 0, sizeof(int), &numThreads, 0, NULL, NULL);
 	
 	/* Build Kernel */
 	err = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
 
 	/* Create OpenCL Kernel */
-  kernel = clCreateKernel(program, "matrixMultiplication", &err);
+    kernel = clCreateKernel(program, "matrixMultiplication", &err);
  
-  /* Set OpenCL Kernel Arguments */
+    /* Set OpenCL Kernel Arguments */
 	err = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&memMatrix);
 	err = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&memVector);
 	err = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&memProduct);
 	err = clSetKernelArg(kernel, 3, sizeof(int), (void *)&memSize);
-	err = clSetKernelArg(kernel, 4, sizeof(int), (void *)&memNumT);
+	//err = clSetKernelArg(kernel, 4, sizeof(int), (void *)&memNumT);
 	
 	/* Execute OpenCL Kernel */
 	size_t globalThreads[2] = {size, size};
 	size_t localThreads[2] = {numThreads, numThreads};
 	 
-	clEnqueueNDRangeKernel(command_queue, kernel, 2, NULL, globalThreads, localThreads, NULL, 0, NULL);
-	/* Copy results from the memory buffer */
-	err = clEnqueueReadBuffer(command_queue, memobjC, CL_TRUE, 0, size * sizeof(int),product, 0, NULL, NULL);
+	
+	clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, globalThreads, localThreads, 0, NULL, NULL);
 
+	/* Copy results from the memory buffer */
+	err = clEnqueueReadBuffer(command_queue, memProduct, CL_TRUE, 0, size * sizeof(int),product, 0, NULL, NULL);
+	
+
+	// int i = 0;
+	// for (i=0;i<size;i++){
+	// 	printf("%d\n", *(product)+i);
+	// }
+
+    err = clFlush(command_queue);
+    err = clFinish(command_queue);
+    err = clReleaseKernel(kernel);
+    err = clReleaseProgram(program);
+    err = clReleaseMemObject(memMatrix);
+    err = clReleaseMemObject(memVector);
+    err = clReleaseMemObject(memProduct);
+    err = clReleaseMemObject(memSize);
+    //err = clReleaseMemObject(memNumT);
+    err = clReleaseCommandQueue(command_queue);
+    err = clReleaseContext(context);
+    
+    free(codeStr);
+    
 	return product;	
 }
 
@@ -159,18 +166,14 @@ int main(int argc, char * argv[]){
 		exit(0);
 	}
 
-	
-	 
- 
-
 	srand(time(NULL));
 	if (strcmp(argv[1], "-g")==0){
 
 		/* initialize matriceis */
-		int ** m1 = initMatrix(100);
-		int ** m2 = initMatrix(1000);
-		int ** m3 = initMatrix(10000);
-		int ** m4 = initMatrix(20000);
+		int * m1 = initMatrix(100);
+		int * m2 = initMatrix(1000);
+		int * m3 = initMatrix(10000);
+		int * m4 = initMatrix(20000);
 		/* initialize vectors */
 		int * v1 = initVector(100);
 		int * v2 = initVector(1000);
@@ -259,15 +262,16 @@ int main(int argc, char * argv[]){
 		int numThreads = atoi(argv[1]);
 		int size = atoi(argv[2]);
 	
-		int ** matrix = initMatrix(size);
+		int * matrix = initMatrix(size);
 		int * vector = initVector(size);
-		int * product = multiply(matrix,vector,size,numThreads)
+        
 
 		printMatrix(matrix, size);
 		printf("\nX\n");
 		printVector(vector,size);
 		printf("\n=\n");
-		printVector(product,size);
+		int * product = multiply(matrix,vector,size,numThreads);
+		//printVector(product,size);
 		deleteMatrix(matrix, size);
 		deleteVector(vector,size);
 		deleteVector(product,size);
